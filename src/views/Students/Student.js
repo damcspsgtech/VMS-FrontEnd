@@ -1,4 +1,4 @@
-import React, { Components } from 'react'
+import { Components } from 'react'
 
 export default class Student extends Components {
     render() {

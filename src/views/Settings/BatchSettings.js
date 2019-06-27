@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { 
-    Button, Badge, 
-    Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
+import {
+    Button, ButtonGroup, Badge,
+    Input, InputGroup, InputGroupAddon, InputGroupText
+} from 'reactstrap'
 import { toast } from 'react-toastify'
 
 export default class BatchSettings extends Component {
@@ -29,6 +30,9 @@ export default class BatchSettings extends Component {
         else if (field === 'batch_year') {
             this.setState({ batch_year: event.target.value });
         }
+        else if (field === 'batch_tutor') {
+            this.setState({ batch_year: event.target.value });
+        }
     };
     handleReset = () => {
         this.setState({
@@ -52,12 +56,9 @@ export default class BatchSettings extends Component {
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>Batch Count</InputGroupText>
                     </InputGroupAddon>
+                    <Input name='count' value={this.state.batch_count} onChange={this.handleChange.bind(this, 'batch_count')} />
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText><Badge color="primary">{this.state.batch_count}</Badge></InputGroupText>
-                    </InputGroupAddon>
-                    <Input name='count' value={this.state.batch_count} onChange={this.handleChange.bind(this, 'batch_count')} placeholder="Wrong? Change it then!" />
-                    <InputGroupAddon addonType="append">
-                        <Button color="danger" onClick={this.handleSubmit.bind(this, 'Batch Count', this.state.batch_count)}>Update</Button>
                     </InputGroupAddon>
                 </InputGroup>
                 <br></br>
@@ -65,12 +66,9 @@ export default class BatchSettings extends Component {
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>Batch Email ID</InputGroupText>
                     </InputGroupAddon>
+                    <Input name='email_id' value={this.state.batch_email} onChange={this.handleChange.bind(this, 'batch_email')} />
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText><Badge color="primary">{this.state.batch_email}</Badge></InputGroupText>
-                    </InputGroupAddon>
-                    <Input name='email_id' value={this.state.batch_email} onChange={this.handleChange.bind(this, 'batch_email')} placeholder="batch email id" />
-                    <InputGroupAddon addonType="append">
-                        <Button color="success" onClick={this.handleSubmit.bind(this, 'Batch Email ID', this.state.batch_email)}>Update</Button>
                     </InputGroupAddon>
                 </InputGroup>
                 <br></br>
@@ -78,12 +76,9 @@ export default class BatchSettings extends Component {
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>Batch Year</InputGroupText>
                     </InputGroupAddon>
+                    <Input name='year' value={this.state.batch_year} onChange={this.handleChange.bind(this, 'batch_year')} />
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText><Badge color="primary">{this.state.batch_year}</Badge></InputGroupText>
-                    </InputGroupAddon>
-                    <Input name='year' value={this.state.batch_year} onChange={this.handleChange.bind(this, 'batch_year')} placeholder="batch year" />
-                    <InputGroupAddon addonType="append">
-                        <Button color="success" onClick={this.handleSubmit.bind(this, 'Batch Year', this.state.batch_year)}>Update</Button>
                     </InputGroupAddon>
                 </InputGroup>
                 <br></br>
@@ -91,20 +86,18 @@ export default class BatchSettings extends Component {
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>Batch Tutor</InputGroupText>
                     </InputGroupAddon>
+                    <Input name="tutor" value={this.state.batch_tutor} onChange={this.handleChange.bind(this, 'batch_tutor')} />
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText><Badge color="primary">{this.state.batch_tutor}</Badge></InputGroupText>
                     </InputGroupAddon>
-                    <Input />
-                    <InputGroupAddon addonType="append">
-                        <Button color="success">Update</Button>
-                    </InputGroupAddon>
                 </InputGroup>
                 <br></br>
-
-                <Button onClick={this.handleReset}>Reset</Button>
-                <Button>Send Form Mail</Button>
-                <Button onClick={this.handleSubmit.bind(this, 'All details', 'this batch')}>Update</Button>
-
+                <ButtonGroup>
+                    <Button onClick={() => toast("Sent Student Details Mail")}>Send Student Details Mail</Button>
+                    <Button onClick={() => toast("Sent Student Report Mail")}>Send Student Report Mail</Button>
+                    <Button color="success" onClick={this.handleSubmit.bind(this, 'All details', 'this batch')}>Update</Button>
+                    <Button color="danger" onClick={this.handleReset}>Reset</Button>
+                </ButtonGroup>
             </div>
         )
     }
