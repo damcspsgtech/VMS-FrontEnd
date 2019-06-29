@@ -19,7 +19,6 @@ import navigation from '../../_nav';
 // routes config
 import routes from '../../routes';
 
-//const DefaultAside = React.lazy(() => import('./DefaultAside'));
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
@@ -35,7 +34,7 @@ class DefaultLayout extends Component {
   render() {
     return (
       <div className="app">
-        <AppHeader fixed>
+        I8OP0-0+=/*;'<AppHeader fixed>
           <Suspense  fallback={this.loading()}>
             <DefaultHeader onLogout={e=>this.signOut(e)}/>
           </Suspense>
@@ -72,11 +71,6 @@ class DefaultLayout extends Component {
               </Suspense>
             </Container>
           </main>
-          {/*<AppAside fixed>
-            <Suspense fallback={this.loading()}>
-              <DefaultAside />
-            </Suspense>
-          </AppAside>*/}
         </div>
         <AppFooter>
           <Suspense fallback={this.loading()}>
