@@ -1,8 +1,8 @@
-# stepping-Stone
+# Internship Management
 
 ## Table of Contents
 
-- [stepping-Stone](#stepping-Stone)
+- [Internship Management](#Internship-Management)
   - [Table of Contents](#Table-of-Contents)
   - [Installation](#Installation)
   - [Create React App](#Create-React-App)
