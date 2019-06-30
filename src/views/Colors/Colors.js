@@ -17,6 +17,9 @@ export default function parseColor(value) {
   else if (value !== undefined && value.toLowerCase() === 'white') {
     value = 'light';
   }
+  else if (value !== undefined && value.toLowerCase() === 'grey') {
+    value = 'secondary';
+  }
   else if (value !== undefined && value.toLowerCase() === 'black') {
     value = 'dark';
   }

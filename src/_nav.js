@@ -36,21 +36,25 @@ export default {
       ],
     },
     {
-      name: 'Guides',
-      url: '/guides',
+      name: 'Faculty',
+      url: '/faculty',
       icon: 'icon-people',
-      children: [
-        {
-          name: 'Guide List',
-          url: '/guide/list',
-          icon: 'icon-list',
-        }
-      ]
     },
     {
-      name: 'Faculty',
-      url: '/users',
-      icon: 'icon-user',
+      name: 'Mail',
+      icon: 'cui-envelope-closed',
+      children: [
+        {
+          name: 'Student Report',
+          url: '/mail/student/report',
+          icon: 'icon-envelope-open'
+        },
+        {
+          name: 'Faculty Details',
+          url: '/mail/faculty_details',
+          icon: 'icon-envelope-open'
+        },
+      ]
     },
     {
       title: true,
@@ -61,9 +65,10 @@ export default {
       },
       class: ''             // optional class names space delimited list for title item ex: "text-center"
     },
+
     {
       name: 'Settings',
-      url: '/admin/settings',
+      url: '/settings',
       icon: 'icon-settings',
     },
   ],

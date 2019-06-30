@@ -51,8 +51,8 @@ export default class GenericSettings extends Component {
                           </InputGroupAddon>
                           <InputGroupAddon addonType="append">
                             <ButtonGroup>
-                              <Button onClick={() => this.onRadioBtnClick('Odd')} active={this.state.activeSession === 'Odd'}>Odd</Button>
-                              <Button onClick={() => this.onRadioBtnClick('Even')} active={this.state.activeSession === 'Even'}>Even</Button>
+                              <Button outline color="danger" onClick={() => this.onRadioBtnClick('Odd')} active={this.state.activeSession === 'Odd'}>Odd</Button>
+                              <Button outline color="danger" onClick={() => this.onRadioBtnClick('Even')} active={this.state.activeSession === 'Even'}>Even</Button>
                             </ButtonGroup>
                           </InputGroupAddon>
                           <InputGroupAddon addonType="prepend">
