@@ -1,72 +1,56 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Row } from 'reactstrap';
+import FacultyMember from "./FacultyMember"
+import axios from 'axios';
 
-import facultyData from './FacultyData'
 
-function FacultyRow(props) {
-  const faculty = props.faculty
-  const facultyLink = `/faculty/${faculty.id}`
-
-  const getBadge = (is_guide) => {
-    return is_guide === true ? 'success' : 'danger'
-  }
-
-  return (
-    <tr key={faculty.id.toString()}>
-      <th scope="row"><Link to={facultyLink}>{faculty.id}</Link></th>
-      <td><Link to={facultyLink}>{faculty.name}</Link></td>
-      <td>{faculty.registered}</td>
-      <td>{faculty.role}</td>
-      <td><Link to={facultyLink}><Badge color={getBadge(faculty.status)}>{faculty.status}</Badge></Link></td>
-    </tr>
-  )
-}
-
-export default class Faculty extends Component {
+export default class Students extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-
+      faculty_list: [[]],
     }
+    this.facultyCards = this.facultyCards.bind(this);
+
   }
 
   componentWillMount() {
+    this.setState({
+      faculty_list: [
+        ['C6027', 'Dr.', 'JEEVADOSS', 'Assistant Professor', 'SJD', 'Mathematics', 'raazdoss@gmail.com', 'Graph Theory', 9600327567, 0, 0],
+        ['C1692', 'Mr.', 'A.MUTHUSAMY', 'Assistant Professor(Selection Grade)', 'AM', 'Mathematics, Computer Science', 'ams.mca@gapps.psgtech.ac.in', "Game theory, Data Mining, Machine learning, Computational Finance, Graph theory, Cryptography", 9442002655, 0, 0],
+      ]
+    })
+  }
 
+  componenDidMount() {
+    axios.get('/faculty/list')
+      .then((response) => {
+        this.setState({
+          faculty_list: response.faculty_list
+        });
+      })
+      .catch((error) => {
+
+      })
+      .finally()
   }
 
   render() {
-    //const facultyList = facultyData.filter((user) => user.id < 10)
     return (
-      <div className="animated fadeIn">
+      <div className="animated fade-in">
         <Row>
-          <Col xs="12">
-            <Card className="">
-              <CardHeader>
-                <i className="icon-people"></i> Faculty <small className="text-muted">information</small>
-              </CardHeader>
-              <CardBody>
-                <Table responsive hover>
-                  <thead>
-                    <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Short Name</th>
-                      <th scope="col">Position</th>
-                      <th scope="col">Guide</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {facultyData.map((faculty, index) =>
-                      <FacultyRow key={index} faculty={faculty} />
-                    )}
-                  </tbody>
-                </Table>
-              </CardBody>
-            </Card>
-          </Col>
+          {this.facultyCards(this.state.faculty_list)}
         </Row>
       </div>
-    )
+    );
+  }
+
+  facultyCards(items) {
+    return (
+      <React.Fragment >
+        {items.map((item) => <FacultyMember key={item[0]} value={item} />)}
+      </React.Fragment >
+    );
   }
 }
