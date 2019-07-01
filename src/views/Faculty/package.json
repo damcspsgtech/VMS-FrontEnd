@@ -1,0 +1,6 @@
+{
+  "name": "Faculty",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Faculty.js"
+}
