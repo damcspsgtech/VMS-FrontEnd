@@ -19,22 +19,23 @@ export default class Settings extends Component {
 
     this.state = {
       activeTab: 'GS',
-      batch_list: [[]]
+      batch_list: [[]],
+      generic: [],
     };
   }
 
-  componentWillMount() {
-    axios.get('/settings')
-      .then((response) => {
+  componentDidMount() {
+    axios.all([
+      axios.get('/api/settings/'),
+      axios.get('/api/settings/batch/'),
+    ])
+      .then(axios.spread((genericRes, batchRes) => {
         this.setState({
-          batch_list: response.batch_list
+          generic: genericRes.data,
+          batch_list: batchRes.data
         });
-      })
-      .catch((error) => {
-        this.setState({
-          batch_list: [['PA', 'MSc. Applied Mathematics'], ['PW', 'MSc. Software Systems'], ['PD', 'MSc. Theoretical Computer Science'], ['PT', 'MSc. Data Science']]
-        });
-      })
+      }))
+      .catch()
       .finally()
   }
 
@@ -47,7 +48,7 @@ export default class Settings extends Component {
               {this.renderTabs(this.state.batch_list)}
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
-              {this.renderPanes(this.state.batch_list)}
+              {this.renderPanes(this.state.batch_list, this.state.generic)}
             </TabContent>
           </Col>
         </Row>
@@ -63,7 +64,7 @@ export default class Settings extends Component {
     }
   }
 
-  renderTabs(items) {
+  renderTabs(batches) {
     return (
       <React.Fragment>
         <NavItem>
@@ -71,11 +72,11 @@ export default class Settings extends Component {
             Generic Settings
           </NavLink>
         </NavItem>
-        {items.map((item) =>
+        {batches.map((batch) =>
           <NavItem>
-            <NavLink className={classnames({ active: this.state.activeTab === item[0] })}
-              onClick={() => { this.toggle(item[0]) }}>
-              {item[1]}
+            <NavLink className={classnames({ active: this.state.activeTab === batch.code })}
+              onClick={() => { this.toggle(batch.code) }}>
+              {batch.course}
             </NavLink>
           </NavItem>
         )}
@@ -83,26 +84,26 @@ export default class Settings extends Component {
     )
   }
 
-  renderPanes(batch_list) {
-    return ([(
+  renderPanes(batches, generic) {
+    return ([
       <TabPane tabId='GS'>
-        <GenericSettings />
+        <GenericSettings value={generic} />
       </TabPane>
-    ),
-    batch_list.map((batch) => <TabPane tabId={batch[0]}>
-      <Row>
-        <Col xs="12">
-          <Card>
-            <CardHeader>Configure {batch[1]}</CardHeader>
-            <CardBody>
-              <BatchSettings batch />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </TabPane>
-    )]
-    );
+      ,
+      batches.map((batch) => <TabPane tabId={batch.code}>
+        <Row>
+          <Col xs="12">
+            <Card>
+              <CardHeader>Configure {batch.course}</CardHeader>
+              <CardBody>
+                <BatchSettings value={batch} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </TabPane>
+      )
+    ]);
   }
 
 }

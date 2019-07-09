@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { Component, Suspense } from 'react';
+import { Redirect, Switch } from 'react-router-dom';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { toast } from 'react-toastify';
 
@@ -17,20 +17,30 @@ export default class Login extends Component {
   }
 
   onLogin() {
-    toast("Login");
-    axios.post('/login', {
-      username: this.state.username,
-      password: this.state.password
+    console.log('fired request')
+    axios.post('/api/login', {
+      user_id: this.state.username,
+      user_pass: this.state.password
     })
       .then(function (response) {
-        toast(response);
+        console.log(response);
+        if (response.data === "Wrong Credentials") {
+          toast(response);
+          return (
+            <Container fluid>
+              <Suspense fallback={this.loading()}>
+                <Switch>
+                  <Redirect from="/login" to="/dashboard" />
+                </Switch>
+              </Suspense>
+            </Container>);
+        }
+        else
+          console.log(response);
       })
       .catch(function (error) {
-        toast(error);
+        console.log(error);
       })
-    return (
-      <Redirect push to="/dashboard" />
-    );
   }
   handleChange(event) {
     const name = event.target.name;
@@ -68,7 +78,7 @@ export default class Login extends Component {
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4" onClick={this.onLogin}>Login</Button>
+                          <Button color="primary" className="px-4" onClick={() => this.onLogin}>Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
                           <Button color="link" className="px-0" onClick={() => toast("Tsk Tsk, its probably the same as your username!")}>Forgot password?</Button>
