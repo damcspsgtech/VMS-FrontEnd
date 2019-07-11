@@ -46,7 +46,9 @@
     "@babel/node": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
     "gh-pages": "^2.0.1",
-    "react-scripts": "^3.0.1"
+    "jquery": "^3.4.1",
+    "react-scripts": "^3.0.1",
+    "typescript": "^3.5.3"
   },
   "scripts": {
     "start": "react-scripts start",
