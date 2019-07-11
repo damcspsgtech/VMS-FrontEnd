@@ -13,9 +13,11 @@ export default class FacultyMember extends Component {
       key: props.key,
       value: props.value,
       info: false,
+      guide: props.value[9] === 1 ? "Guide" : "Not a Guide"
     };
     this.toggle = this.toggle.bind(this);
     this.toggleInfo = this.toggleInfo.bind(this);
+    this.forceUpdate();
   }
   toggle() {
     var temp = this.state.value;
@@ -23,12 +25,14 @@ export default class FacultyMember extends Component {
       temp[9] = 0
       this.setState({
         value: temp,
+        guide: "Not a Guide"
       });
     }
     else if (temp[9] === 0) {
       temp[9] = 1;
       this.setState({
         value: temp,
+        guide: "Guide"
       });
     }
   }
@@ -36,7 +40,6 @@ export default class FacultyMember extends Component {
     this.setState({
       info: !this.state.info,
     });
-    e.preventDefault();
   }
 
   render() {
@@ -47,14 +50,12 @@ export default class FacultyMember extends Component {
             <CardTitle className="float-right">{this.state.value[1] + this.state.value[2]}<br></br>
               <Badge className="float-left">{this.state.value[0]}</Badge></CardTitle>
             <Media top right className="float-left" size="10px" src={logo} alt="Photo" />
-
           </CardHeader>
           <CardBody>
-
             <InputGroup>
-              <Button className="float-left" outline color="danger" active={this.state.value[9] === 1} onClick={this.toggle}>
-                Guide
-                </Button>
+              <Button className="float-left" color="danger" onClick={this.toggle}>
+                {this.state.guide}
+              </Button>
               <InputGroupAddon>
                 <InputGroupText>
                   Allocated: {this.state.value[10]}

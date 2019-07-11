@@ -5,22 +5,42 @@ import {
 } from 'reactstrap'
 import { toast } from 'react-toastify'
 import parseColor from '../Colors'
+import axios from 'axios';
 
 export default class BatchSettings extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      batch_code: 'PX',
-      batch_count: '40',
-      batch_email: 'contact@googlegroups.com',
-      batch_year: '2019',
-      batch_tutor: 'Alien',
-      batch_color: 'Red'
-    }
+      batch_id: this.props.value.code,
+      batch_code: this.props.value.code,
+      batch_count: this.props.value.count,
+      batch_email: this.props.value.email,
+      batch_year: this.props.value.year,
+      batch_tutor: this.props.value.tutor,
+      batch_color: this.props.value.color
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
+  }
+
+  componentWillReceiveProps() {
+    this.setState({
+      batch_code: this.props.value.code,
+      batch_count: this.props.value.count,
+      batch_email: this.props.value.email,
+      batch_year: this.props.value.year,
+      batch_tutor: this.props.value.tutor,
+      batch_color: this.props.value.color
+    });
+  }
+
+  componentDidReceiveProps() {
+    this.setState({
+      batch_id: (this.props.value.year).slice(2, -1) + this.props.value.code,
+    });
   }
 
   render() {
@@ -99,7 +119,7 @@ export default class BatchSettings extends Component {
         </InputGroup>
         <br></br>
         <ButtonGroup>
-          <Button color="success" onClick={this.handleSubmit.bind(this)}>Update</Button>
+          <Button color="success" onClick={this.handleSubmit}>Update</Button>
           <Button color="danger" onClick={this.handleReset}>Reset</Button>
         </ButtonGroup>
       </div>
@@ -111,19 +131,21 @@ export default class BatchSettings extends Component {
     this.setState({ [name]: event.target.value });
   };
 
-  handleReset = () => {
+  handleReset() {
     this.setState({
-      batch_code: 'PX',
-      batch_count: '40',
-      batch_email: 'contact@googlegroups.com',
-      batch_year: '2019',
-      batch_tutor: 'Alien',
-      batch_color: 'Red'
+      batch_id: (this.props.value.year).slice(2, -1) + this.props.value.code,
+      batch_code: this.props.value.code,
+      batch_count: this.props.value.count,
+      batch_email: this.props.value.email,
+      batch_year: this.props.value.year,
+      batch_tutor: this.props.value.tutor,
+      batch_color: this.props.value.color
     });
   };
 
-  handleSubmit(event) {
-    toast("Batch details have been set.", { position: toast.POSITION.TOP_RIGHT });
-    event.preventDefault();
+  handleSubmit() {
+    axios.post('/api/settings/batch', this.state)
+      .then((response) => toast(response.data))
+      .catch((error) => console.log(error))
   };
 }
