@@ -12,14 +12,14 @@ export default class BatchSettings extends Component {
     super(props);
 
     this.state = {
-      batch_id: (this.props.value.year) + this.props.value.code,
+      batch_id: this.props.value.code,
       batch_code: this.props.value.code,
       batch_count: this.props.value.count,
       batch_email: this.props.value.email,
       batch_year: this.props.value.year,
       batch_tutor: this.props.value.tutor,
       batch_color: this.props.value.color
-    }
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,14 +28,19 @@ export default class BatchSettings extends Component {
 
   componentWillReceiveProps() {
     this.setState({
-      batch_id: (this.props.value.year) + this.props.value.code,
       batch_code: this.props.value.code,
       batch_count: this.props.value.count,
       batch_email: this.props.value.email,
       batch_year: this.props.value.year,
       batch_tutor: this.props.value.tutor,
       batch_color: this.props.value.color
-    })
+    });
+  }
+
+  componentDidReceiveProps() {
+    this.setState({
+      batch_id: (this.props.value.year).slice(2, -1) + this.props.value.code,
+    });
   }
 
   render() {
@@ -128,13 +133,13 @@ export default class BatchSettings extends Component {
 
   handleReset() {
     this.setState({
-      batch_id: '19PX',
-      batch_code: 'PX',
-      batch_count: '40',
-      batch_email: 'contact@googlegroups.com',
-      batch_year: '2019',
-      batch_tutor: 'Alien',
-      batch_color: 'Red'
+      batch_id: (this.props.value.year).slice(2, -1) + this.props.value.code,
+      batch_code: this.props.value.code,
+      batch_count: this.props.value.count,
+      batch_email: this.props.value.email,
+      batch_year: this.props.value.year,
+      batch_tutor: this.props.value.tutor,
+      batch_color: this.props.value.color
     });
   };
 

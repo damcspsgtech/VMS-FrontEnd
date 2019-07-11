@@ -25,16 +25,12 @@ export default class Settings extends Component {
   }
 
   componentDidMount() {
-    axios.all([
-      axios.get('/api/settings/'),
-      axios.get('/api/settings/batch/'),
-    ])
-      .then(axios.spread((genericRes, batchRes) => {
+    axios.get('/api/settings/batch/')
+      .then((res) => {
         this.setState({
-          generic: genericRes.data,
-          batch_list: batchRes.data
+          batch_list: res.data
         });
-      }))
+      })
       .catch()
       .finally()
   }
@@ -87,7 +83,7 @@ export default class Settings extends Component {
   renderPanes(batches, generic) {
     return ([
       <TabPane tabId='GS'>
-        <GenericSettings value={generic} />
+        <GenericSettings />
       </TabPane>
       ,
       batches.map((batch) => <TabPane tabId={batch.code}>

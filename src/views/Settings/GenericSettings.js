@@ -19,32 +19,37 @@ export default class GenericSettings extends Component {
     this.toggleCollapseSheet = this.toggleCollapseSheet.bind(this);
 
     this.state = {
-      activeSession: this.props.value.session,
-      stud_form: this.props.value.student_form,
-      faculty_form: this.props.value.faculty_form,
-      report_form: this.props.value.report_form,
-      examiner_form: this.props.value.examiner_form,
-      stud_sheet: this.props.value.student_sheet,
-      faculty_sheet: this.props.value.faculty_sheet,
-      report_sheet: this.props.value.report_sheet,
-      examiner_sheet: this.props.value.examiner_sheet,
+      activeSession: 'Odd',
+      stud_form: 'https://docs.google.com/forms',
+      intern_form: 'https://docs.google.com/forms',
+      faculty_form: 'https://docs.google.com/forms',
+      report_form: 'https://docs.google.com/forms',
+      examiner_form: 'https://docs.google.com/forms',
+      stud_sheet: 'https://docs.google.com/sheets',
+      intern_sheet: 'https://docs.google.com/sheets',
+      faculty_sheet: 'https://docs.google.com/sheets',
+      report_sheet: 'https://docs.google.com/sheets',
+      examiner_sheet: 'https://docs.google.com/sheets',
       collapseForm: false,
       collapseSheet: false,
     };
   }
 
-  componentWillReceiveProps() {
-    this.setState({
-      activeSession: this.props.value.session,
-      stud_form: this.props.value.student_form,
-      faculty_form: this.props.value.faculty_form,
-      report_form: this.props.value.report_form,
-      examiner_form: this.props.value.examiner_form,
-      stud_sheet: this.props.value.student_sheet,
-      faculty_sheet: this.props.value.faculty_sheet,
-      report_sheet: this.props.value.report_sheet,
-      examiner_sheet: this.props.value.examiner_sheet
-    })
+  componentDidMount() {
+    axios.get('/api/settings/')
+      .then((res) => {
+        this.setState({
+          activeSession: res.data.session,
+          stud_form: res.data.student_form,
+          faculty_form: res.data.faculty_form,
+          report_form: res.data.report_form,
+          examiner_form: res.data.examiner_form,
+          stud_sheet: res.data.student_sheet,
+          faculty_sheet: res.data.faculty_sheet,
+          report_sheet: res.data.report_sheet,
+          examiner_sheet: res.data.examiner_sheet
+        });
+      })
   }
 
   render() {
@@ -53,7 +58,7 @@ export default class GenericSettings extends Component {
         <Row>
           <Col xs="12">
             <Card>
-              <CardHeader>Configure Generic Settings {this.props.value.id}</CardHeader>
+              <CardHeader>Configure Generic Settings</CardHeader>
               <CardBody>
                 <div className="animated fadeIn">
                   <Form>
