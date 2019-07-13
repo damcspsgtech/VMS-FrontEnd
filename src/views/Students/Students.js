@@ -2,47 +2,32 @@ import React, { Component } from 'react';
 import { Row } from 'reactstrap';
 import Student from "./Student"
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 export default class Students extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      student_list: [[]],
+      student_list: [{}],
     }
     this.studentCards = this.studentCards.bind(this);
 
   }
 
-  componentWillMount() {
-    this.setState({
-      student_list: [
-        ['17PW01', 'Aakash Hemadri', 'Internship Report Filled', 'red'],
-        ['17PW01', 'Aakash Hemadri', 'Internship Report Filled', 'red'],
-        ['17PW01', 'Aakash Hemadri', 'Internship Report Filled', 'red'],
-        ['17PD02', 'Aditiya', 'Internship Report Filled', 'blue'],
-        ['17PD02', 'Aditiya', 'Internship Report Filled', 'blue'],
-        ['17PD02', 'Aditiya', 'Internship Report Filled', 'blue'],
-        ['17PT02', 'Aditiya', 'Internship Report Filled', 'yellow'],
-        ['17PT02', 'Aditiya', 'Internship Report Filled', 'yellow'],
-        ['17PA02', 'Aditiya', 'Internship Report Filled', 'green'],
-        ['17PA02', 'Aditiya', 'Internship Report Filled', 'green'],
-      ]
-    })
-  }
-
-  componenDidMount() {
-    axios.get('/student/list')
+  componentDidMount() {
+    axios.get('/api/students/')
       .then((response) => {
         this.setState({
-          student_list: response.student_list
+          student_list: response.data
         });
       })
       .catch((error) => {
-
+        toast('error')
       })
       .finally()
   }
+
 
   render() {
     return (
@@ -57,7 +42,7 @@ export default class Students extends Component {
   studentCards(items) {
     return (
       <React.Fragment >
-        {items.map((item) => <Student key={item[0]} value={item} />)}
+        {items.map((item) => <Student key={item[0]} student={item} />)}
       </React.Fragment >
     );
   }
