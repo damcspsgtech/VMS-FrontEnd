@@ -13,8 +13,6 @@ export default class Student extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      key: props.key,
-      value: props.value,
       info: false,
     };
     this.toggleInfo = this.toggleInfo.bind(this);
@@ -30,10 +28,10 @@ export default class Student extends Component {
     return (<React.Fragment>
       <Col xs="12" sm="6" md="4" lg="3">
         <Link className="text-decoration-none text-muted:hover" onClick={this.toggleInfo} >
-          <Card className={'text-dark bg-' + parseColor(this.state.value[3])}>
+          <Card className={'text-dark bg-' + parseColor(this.props.student.batches.color)}>
             <CardHeader >
-              <CardTitle className="float-right">{this.props.value[1]}<br></br>
-                <Badge className="float-right">{this.state.value[0]}</Badge></CardTitle>
+              <CardTitle className="float-right">{this.props.student.name}<br></br>
+                <Badge className="float-right">{this.props.student.roll_no}</Badge></CardTitle>
               <Media top right className="float-left" size="10px" src={logo} alt="Photo" />
             </CardHeader>
             <CardBody>
@@ -48,9 +46,9 @@ export default class Student extends Component {
             </CardBody>
           </Card>
         </Link>
-        <Modal className={"modal-" + parseColor(this.state.value[3])} isOpen={this.state.info} toggle={this.toggleInfo}>
+        <Modal className={"modal-" + parseColor(this.props.student.color)} isOpen={this.state.info} toggle={this.toggleInfo}>
           <ModalHeader toggle={this.toggleInfo}>
-            {this.state.value[1]}
+            {this.props.student.name}
           </ModalHeader>
           <ModalBody>
             <ListGroup>
@@ -58,7 +56,7 @@ export default class Student extends Component {
             </ListGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color={parseColor(this.state.value[3])} onClick={this.toggleInfo}>Okay</Button>
+            <Button color={parseColor(this.props.student.color)} onClick={this.toggleInfo}>Okay</Button>
           </ModalFooter>
         </Modal>
       </Col>
@@ -73,9 +71,9 @@ export default class Student extends Component {
           <ListGroupItemHeading>
             Roll Number
           </ListGroupItemHeading>
-          <Badge color={parseColor(this.state.value[3])}>
+          <Badge color={parseColor(this.props.student.color)}>
             <h5>
-              {this.state.value[0]}
+              {this.props.student.roll_no}
             </h5>
           </Badge>
         </ListGroupItem>
@@ -83,9 +81,9 @@ export default class Student extends Component {
           <ListGroupItemHeading>
             Project Category
           </ListGroupItemHeading>
-          <Badge color={parseColor(this.state.value[3])}>
+          <Badge color={parseColor(this.props.student.color)}>
             <h5>
-
+              {this.props.student.project_category}
             </h5>
           </Badge>
         </ListGroupItem>
@@ -93,9 +91,9 @@ export default class Student extends Component {
           <ListGroupItemHeading>
             Email ID
           </ListGroupItemHeading>
-          <Badge color={parseColor(this.state.value[3])}>
+          <Badge color={parseColor(this.props.student.color)}>
             <h5>
-
+              {this.props.student.email}
             </h5>
           </Badge>
         </ListGroupItem>
@@ -103,9 +101,9 @@ export default class Student extends Component {
           <ListGroupItemHeading>
             Organization
           </ListGroupItemHeading>
-          <Badge color={parseColor(this.state.value[3])}>
+          <Badge color={parseColor(this.props.student.color)}>
             <h5>
-
+              {this}
             </h5>
           </Badge>
         </ListGroupItem>
@@ -113,7 +111,7 @@ export default class Student extends Component {
           <ListGroupItemHeading>
             Project Category
           </ListGroupItemHeading>
-          <Badge color={parseColor(this.state.value[3])}>
+          <Badge color={parseColor(this.props.student.color)}>
             <h5>
 
             </h5>

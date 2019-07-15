@@ -1,151 +1,110 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
-  Button, ButtonGroup, Badge,
-  Input, InputGroup, InputGroupAddon, InputGroupText
-} from 'reactstrap'
-import { toast } from 'react-toastify'
-import parseColor from '../Colors'
+  ListGroup, ListGroupItem,
+  Input, InputGroup, InputGroupAddon, InputGroupText,
+  Button, ButtonGroup,
+} from 'reactstrap';
+import Batch from './Batch';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default class BatchSettings extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      batch_id: this.props.value.code,
-      batch_code: this.props.value.code,
-      batch_count: this.props.value.count,
-      batch_email: this.props.value.email,
-      batch_year: this.props.value.year,
-      batch_tutor: this.props.value.tutor,
-      batch_color: this.props.value.color
-    };
+      batches: [],
+      course_id: '',
+      batch_semester: '',
+      batch_year: ''
+    }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleReset = this.handleReset.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
-
-  componentWillReceiveProps() {
-    this.setState({
-      batch_code: this.props.value.code,
-      batch_count: this.props.value.count,
-      batch_email: this.props.value.email,
-      batch_year: this.props.value.year,
-      batch_tutor: this.props.value.tutor,
-      batch_color: this.props.value.color
-    });
+  componentDidUpdate(prevProps) {
+    if (this.props.batches !== prevProps.batches) {
+      this.setState({
+        batches: this.props.batches,
+      })
+    }
   }
-
-  componentDidReceiveProps() {
-    this.setState({
-      batch_id: (this.props.value.year).slice(2, -1) + this.props.value.code,
-    });
-  }
-
   render() {
-    return (
-      <div className="animated fadeIn">
-        <InputGroup>
-          <InputGroupAddon>
-            <InputGroupText>
-              Batch Code
-            </InputGroupText>
-          </InputGroupAddon>
-          <Input name='batch_code' value={this.state.batch_code} onChange={this.handleChange.bind(this)} />
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_code}</Badge></InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-        <br></br>
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>Batch Count</InputGroupText>
-          </InputGroupAddon>
-          <Input name='batch_count' value={this.state.batch_count} onChange={this.handleChange.bind(this)} />
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_count}</Badge></InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-        <br></br>
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>Batch Email ID</InputGroupText>
-          </InputGroupAddon>
-          <Input name='batch_email' value={this.state.batch_email} onChange={this.handleChange.bind(this)} />
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_email}</Badge></InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-        <br></br>
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>Batch Year</InputGroupText>
-          </InputGroupAddon>
-          <Input name='batch_year' value={this.state.batch_year} onChange={this.handleChange.bind(this)} />
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_year}</Badge></InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-        <br></br>
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>Batch Tutor</InputGroupText>
-          </InputGroupAddon>
-          <Input name="batch_tutor" value={this.state.batch_tutor} onChange={this.handleChange.bind(this)} />
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_tutor}</Badge></InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-        <br></br>
-        <InputGroup >
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>Batch Color</InputGroupText>
-          </InputGroupAddon>
-          <InputGroupAddon>
-            <ButtonGroup>
-              <Button outline color="danger" onClick={() => this.setState({ batch_color: 'Red' })} active={this.state.batch_color === 'Red'}> Red</Button>
-              <Button outline color="success" onClick={() => this.setState({ batch_color: 'Green' })} active={this.state.batch_color === 'Green'}>Green</Button>
-              <Button outline color="primary" onClick={() => this.setState({ batch_color: 'Blue' })} active={this.state.batch_color === 'Blue'}>Blue</Button>
-              <Button outline color="warning" onClick={() => this.setState({ batch_color: 'Yellow' })} active={this.state.batch_color === 'Yellow'}>Yellow</Button>
-              <Button outline color="light" className="text-dark" onClick={() => this.setState({ batch_color: 'White' })} active={this.state.batch_color === 'White'}>White</Button>
-              <Button outline color="secondary" onClick={() => this.setState({ batch_color: 'Grey' })} active={this.state.batch_color === 'Grey'}>Grey</Button>
-              <Button outline color="dark" onClick={() => this.setState({ batch_color: 'Black' })} active={this.state.batch_color === 'Black'}>Black</Button>
-            </ButtonGroup>
-          </InputGroupAddon>
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_color}</Badge></InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-        <br></br>
-        <ButtonGroup>
-          <Button color="success" onClick={this.handleSubmit}>Update</Button>
-          <Button color="danger" onClick={this.handleReset}>Reset</Button>
-        </ButtonGroup>
-      </div>
-    )
+    return ([
+      <div class="animated fadeIn" >
+        <ListGroup>
+          <ListGroupItem color="secondary" >
+            <InputGroup>
+              <InputGroupAddon>
+                <InputGroupText>
+                  Batch Addition
+                </InputGroupText>
+              </InputGroupAddon>
+              <InputGroupAddon>
+                <InputGroupText>Course Code</InputGroupText>
+              </InputGroupAddon>
+              <Input name="course_id" placeholder="PX" value={this.state.course_id} onChange={this.handleOnChange}></Input>
+              <InputGroupAddon>
+                <InputGroupText>Batch Semester</InputGroupText>
+              </InputGroupAddon>
+              <Input name="batch_semester" placeholder="IV/VII/X" value={this.state.batch_semester} onChange={this.handleOnChange}></Input>
+              <InputGroupAddon>
+                <InputGroupText>Batch Year</InputGroupText>
+              </InputGroupAddon>
+              <Input name="batch_year" placeholder="20XX" value={this.state.batch_year} onChange={this.handleOnChange}></Input>
+              <ButtonGroup className="float-right">
+                <Button color="success" className="float-right" onClick={this.handleAdd}>
+                  Add
+                </Button>
+              </ButtonGroup>
+            </InputGroup>
+          </ListGroupItem>
+          {this.state.batches.map((batch) => <Batch value={batch} handleDelete={this.handleDelete} updateBatch={this.props.updateBatch} />)},
+    </ListGroup></div >
+    ])
   }
 
-  handleChange(event) {
-    const name = event.target.name;
-    this.setState({ [name]: event.target.value });
-  };
+  handleDelete(id, course_name) {
+    axios.post('/api/settings/batch/delete', {
+      batch_id: id,
+    })
+      .then((res) => {
+        if (res.data.result === 'success') {
+          this.props.updateBatch();
+          toast.success('Batch ' + id + ' has been deleted successfully!')
+        }
+        else if (res.data.result === 'failed') {
+          toast.error('Failed to delete batch ' + id);
+        }
+      })
+      .catch((err) => {
+        toast.danger('Failed to connect to proxy!')
+      })
+  }
 
-  handleReset() {
+  handleOnChange(event) {
     this.setState({
-      batch_id: (this.props.value.year).slice(2, -1) + this.props.value.code,
-      batch_code: this.props.value.code,
-      batch_count: this.props.value.count,
-      batch_email: this.props.value.email,
-      batch_year: this.props.value.year,
-      batch_tutor: this.props.value.tutor,
-      batch_color: this.props.value.color
-    });
-  };
+      [event.target.name]: event.target.value
+    })
+  }
 
-  handleSubmit() {
-    axios.post('/api/settings/batch', this.state)
-      .then((response) => toast(response.data))
-      .catch((error) => console.log(error))
-  };
+  handleAdd() {
+    axios.post('/api/settings/batch/add', {
+      course_id: this.state.course_id,
+      batch_semester: this.state.batch_semester,
+      batch_year: this.state.batch_year
+    })
+      .then((res) => {
+        if (res.data.result === 'course_dne') {
+          toast.error('Course does not exist!\nCreate the course before you create a batch!')
+        }
+        else if (res.data.result === 'batch_exists') {
+          toast.warning('Batch entry already exists!');
+        }
+        else if (res.data.result === 'success') {
+          this.props.updateBatch();
+          toast.success('Batch ' + (this.state.batch_year).slice(2, 4) + this.state.course_id + ' has been added!')
+        }
+      })
+  }
 }
