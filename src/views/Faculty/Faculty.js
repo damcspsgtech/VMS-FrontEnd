@@ -1,75 +1,72 @@
 import React, { Component } from 'react';
-import { Row, Col, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
+import {
+  Card, CardBody, CardHeader, Row, Button, ButtonGroup,
+  Input, InputGroup, InputGroupAddon, InputGroupText
+} from 'reactstrap';
 import FacultyMember from "./FacultyMember"
 import axios from 'axios';
-import classnames from 'classnames';
+import { toast } from 'react-toastify';
+
 
 
 export default class Students extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      faculty_list: [[]],
-      activeTab: 'Faculty'
+      faculty_list: [],
+      search: '',
+      filter_guide: false,
     }
     this.facultyCards = this.facultyCards.bind(this);
-    this.toggle = this.toggle.bind(this);
-
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.updateFaculty = this.updateFaculty.bind(this);
+    this.handleFilterGuide = this.handleFilterGuide.bind(this);
   }
 
-  componentWillMount() {
-    this.setState({
-      faculty_list: [
-        ['C6027', 'Dr.', 'JEEVADOSS', 'Assistant Professor', 'SJD', 'Mathematics', 'raazdoss@gmail.com', 'Graph Theory', 9600327567, 1, 5],
-        ['C1692', 'Mr.', 'A.MUTHUSAMY', 'Assistant Professor(Selection Grade)', 'AM', 'Mathematics, Computer Science', 'ams.mca@gapps.psgtech.ac.in', "Game theory, Data Mining, Machine learning, Computational Finance, Graph theory, Cryptography", 9442002655, 0, 10], ['C6027', 'Dr.', 'JEEVADOSS', 'Assistant Professor', 'SJD', 'Mathematics', 'raazdoss@gmail.com', 'Graph Theory', 9600327567, 1, 7],
-      ]
-    })
-  }
-
-  componenDidMount() {
-    axios.get('/faculty/list')
-      .then((response) => {
-        this.setState({
-          faculty_list: response.faculty_list
-        });
+  componentDidMount() {
+    axios.get('/api/faculty/')
+      .then((res) => {
+        if (res.data.result === 'success') {
+          this.setState({
+            faculty_list: res.data.faculty
+          });
+        }
       })
       .catch((error) => {
-
+        toast(error)
       })
-      .finally()
   }
-
   render() {
     return (
       <div className="animated fade-in">
-        <Row>
-          <Col xs="12">
-            <Nav tabs>
-              <NavItem>
-                <NavLink className={classnames({ active: this.state.activeTab === 'Faculty' })} onClick={() => { this.toggle('Faculty') }}>
-                  Faculty
-              </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink className={classnames({ active: this.state.activeTab === 'Guides' })} onClick={() => { this.toggle('Guides') }}>
-                  Guides
-                </NavLink>
-              </NavItem>
-            </Nav>
-            <TabContent activeTab={this.state.activeTab}>
-              <TabPane tabId='Faculty' className="animated fade-in">
-                <Row>
-                  {this.facultyCards(this.state.faculty_list)}
-                </Row>
-              </TabPane>
-              <TabPane tabId='Guides'>
-                <Row>
-                  {this.facultyCards(this.state.faculty_list.filter((faculty) => faculty[9] === 1))}
-                </Row>
-              </TabPane>
-            </TabContent>
-          </Col>
-        </Row>
+        <Card>
+          <CardHeader>
+            <InputGroup className="float-right">
+              <InputGroupAddon prepend>
+                Faculty
+              </InputGroupAddon>
+              <InputGroupAddon append>
+                <InputGroupText>
+                  Search Filter
+              </InputGroupText>
+              </InputGroupAddon>
+              <InputGroupAddon>
+                <ButtonGroup>
+                  <Button color="primary" outline active={this.state.filter_guide} onClick={this.handleFilterGuide}>
+                    Guide
+                  </Button>
+                </ButtonGroup>
+              </InputGroupAddon>
+              <Input name="search" placeholder="Search" value={this.state.search} onChange={this.handleChange.bind(this)} />
+            </InputGroup>
+          </CardHeader>
+          <CardBody>
+            <Row>
+              {this.facultyCards(this.state.faculty_list, this.updateFaculty)}
+            </Row>
+          </CardBody>
+        </Card>
       </div >
     );
   }
@@ -77,17 +74,49 @@ export default class Students extends Component {
   facultyCards(items) {
     return (
       <React.Fragment >
-        {items.map((item, act) => <FacultyMember key={item[0]} value={item} />)}
+        {items.map((item) => <FacultyMember value={item} updateFaculty={this.updateFaculty} />)}
       </React.Fragment >
     );
   }
 
-  toggle(tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
+  async handleChange(event) {
+    await this.setState({
+      [event.target.name]: event.target.value,
+    })
+    this.handleSearch()
   }
 
+  handleSearch() {
+    axios.post('/api/faculty/search', {
+      search: this.state.search,
+      filter_guide: this.state.filter_guide,
+    })
+      .then((res) => {
+        if (res.data.result === 'success') {
+          this.setState({
+            faculty_list: res.data.faculty
+          })
+        }
+      })
+  }
+  async handleFilterGuide() {
+    await this.setState({
+      filter_guide: !this.state.filter_guide
+    });
+    this.handleSearch();
+  }
+
+  updateFaculty() {
+    axios.get('/api/faculty/')
+      .then((res) => {
+        if (res.data.result === 'success') {
+          this.setState({
+            faculty_list: res.data.faculty
+          });
+        }
+      })
+      .catch((error) => {
+        toast(error)
+      })
+  }
 } 

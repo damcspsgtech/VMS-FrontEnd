@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import {
   Card, CardTitle, CardHeader, CardBody, Button,
-  Col, Badge, Media, Modal, ModalHeader, ModalFooter, ModalBody,
-  ListGroup, ListGroupItem, ListGroupItemHeading, InputGroup, InputGroupAddon,
-} from 'reactstrap'
-import parseColor from '../Colors'
-import logo from '../../assets/img/6.jpg'
+  Col, Badge, Media, Modal, ModalHeader, ModalFooter, ModalBody, ListGroupItemText,
+  ListGroup, ListGroupItem, ListGroupItemHeading,
+} from 'reactstrap';
+import parseColor from '../Colors';
+import placeholder_img from '../../assets/img/avatars/user-placeholder.png';
 import { Link } from 'react-router-dom'
 
 
@@ -14,6 +14,7 @@ export default class Student extends Component {
     super(props);
     this.state = {
       info: false,
+
     };
     this.toggleInfo = this.toggleInfo.bind(this);
     this.renderItems = this.renderItems.bind(this);
@@ -24,31 +25,41 @@ export default class Student extends Component {
       info: !this.state.info
     });
   }
+
   render() {
-    return (<React.Fragment>
-      <Col xs="12" sm="6" md="4" lg="3">
-        <Link className="text-decoration-none text-muted:hover" onClick={this.toggleInfo} >
-          <Card className={'text-dark bg-' + parseColor(this.props.student.batches.color)}>
+    const imageSize = {
+      maxHeight: 64,
+      maxWidth: 64,
+    }
+    return (
+      <Col xs="12" sm="6" md="4" lg="3" className="animated fadeIn">
+        <Link className="text-decoration-none text-muted:hover" onClick={this.toggleInfo}>
+          <Card >
             <CardHeader >
-              <CardTitle className="float-right">{this.props.student.name}<br></br>
-                <Badge className="float-right">{this.props.student.roll_no}</Badge></CardTitle>
-              <Media top right className="float-left" size="10px" src={logo} alt="Photo" />
+              <CardTitle color={parseColor(this.props.student.Batch.color)} className={"float-right text-dark"}>
+                {this.props.student.name}<br></br>
+                <h3><Badge color={parseColor(this.props.student.Batch.color)} className="float-right">{this.props.student.roll_no}</Badge></h3>
+              </CardTitle>
+              <Media className="float-left" style={imageSize} src={placeholder_img} alt="Photo" />
             </CardHeader>
-            <CardBody>
-              <InputGroup>
-                <InputGroupAddon>
-                  Report Status
-                </InputGroupAddon>
-                <Button disabled>
-                  Pending
-                </Button>
-              </InputGroup>
+            <CardBody className={'bg-secondary'}>
+              <h3>
+                <Badge color="dark">{this.props.student.Guide.id === 'admin' ? 'Guide' : this.props.student.Guide.name}</Badge>&nbsp;
+                  <Badge color={parseColor(this.props.student.Batch.color)}>{this.props.student.address_city === null ? 'City' : this.props.student.address_city}</Badge>&nbsp;
+                  <Badge color="light">{this.props.student.project_category}</Badge>&nbsp;
+                </h3>
             </CardBody>
           </Card>
         </Link>
-        <Modal className={"modal-" + parseColor(this.props.student.color)} isOpen={this.state.info} toggle={this.toggleInfo}>
+        <Modal className={"modal-" + parseColor(this.props.student.Batch.color)} isOpen={this.state.info} toggle={this.toggleInfo}>
           <ModalHeader toggle={this.toggleInfo}>
-            {this.props.student.name}
+            {this.props.student.name}&nbsp;
+              <h3><Badge color="dark">
+              {this.props.student.roll_no}
+            </Badge>
+              <Badge>
+                {this.props.student.project_category}
+              </Badge></h3>
           </ModalHeader>
           <ModalBody>
             <ListGroup>
@@ -56,68 +67,92 @@ export default class Student extends Component {
             </ListGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color={parseColor(this.props.student.color)} onClick={this.toggleInfo}>Okay</Button>
+            <Button color={parseColor(this.props.student.Batch.color)} onClick={this.toggleInfo}>Okay</Button>
           </ModalFooter>
         </Modal>
       </Col>
-    </React.Fragment >
     );
   }
 
   renderItems() {
     return (
-      <React.Fragment>
+      <div class="animated fadeIn">
         <ListGroupItem>
           <ListGroupItemHeading>
-            Roll Number
+            Project Title
           </ListGroupItemHeading>
-          <Badge color={parseColor(this.props.student.color)}>
-            <h5>
-              {this.props.student.roll_no}
-            </h5>
-          </Badge>
+          <ListGroupItemText>
+            {this.props.student.project_title}
+          </ListGroupItemText>
         </ListGroupItem>
         <ListGroupItem>
           <ListGroupItemHeading>
-            Project Category
+            Project Domain
           </ListGroupItemHeading>
-          <Badge color={parseColor(this.props.student.color)}>
-            <h5>
-              {this.props.student.project_category}
-            </h5>
-          </Badge>
+          <ListGroupItemText>
+            {this.props.student.project_domain_keywords}
+          </ListGroupItemText>
         </ListGroupItem>
         <ListGroupItem>
           <ListGroupItemHeading>
-            Email ID
+            Student Email
           </ListGroupItemHeading>
-          <Badge color={parseColor(this.props.student.color)}>
-            <h5>
-              {this.props.student.email}
-            </h5>
-          </Badge>
+          <ListGroupItemText>
+            {this.props.student.email}
+          </ListGroupItemText>
+        </ListGroupItem>
+        <ListGroupItem>
+          <ListGroupItemHeading>
+            Phone Number
+          </ListGroupItemHeading>
+          <ListGroupItemText>
+            {this.props.student.phone_number}
+          </ListGroupItemText>
         </ListGroupItem>
         <ListGroupItem>
           <ListGroupItemHeading>
             Organization
           </ListGroupItemHeading>
-          <Badge color={parseColor(this.props.student.color)}>
-            <h5>
-              {this}
-            </h5>
-          </Badge>
+          <ListGroupItemText>
+            {this.props.student.organization_name}
+          </ListGroupItemText>
         </ListGroupItem>
         <ListGroupItem>
           <ListGroupItemHeading>
-            Project Category
+            Mentor Name
           </ListGroupItemHeading>
-          <Badge color={parseColor(this.props.student.color)}>
-            <h5>
-
-            </h5>
-          </Badge>
+          <ListGroupItemText>
+            {this.props.student.mentor_name}
+          </ListGroupItemText>
         </ListGroupItem>
-      </React.Fragment>
+        <ListGroupItem>
+          <ListGroupItemHeading>
+            Mentor Email
+          </ListGroupItemHeading>
+          <ListGroupItemText>
+            {this.props.student.mentor_email}
+          </ListGroupItemText>
+        </ListGroupItem>
+        <ListGroupItem>
+          <ListGroupItemHeading>
+            Mentor Designation
+          </ListGroupItemHeading>
+          <ListGroupItemText>
+            {this.props.student.mentor_designation}
+          </ListGroupItemText>
+        </ListGroupItem>
+        <ListGroupItem>
+          <ListGroupItemHeading>
+            Organization's Address
+          </ListGroupItemHeading>
+          <ListGroupItemText>
+            <a href={this.props.student.address_url}>
+              {this.props.student.postal_address}
+            </a>
+          </ListGroupItemText>
+        </ListGroupItem>
+
+      </div >
     );
   }
 }
