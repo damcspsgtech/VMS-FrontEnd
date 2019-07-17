@@ -63,7 +63,7 @@ export default class Students extends Component {
           </CardHeader>
           <CardBody>
             <Row>
-              {this.facultyCards(this.state.faculty_list, this.updateFaculty)}
+              {this.facultyCards(this.state.faculty_list)}
             </Row>
           </CardBody>
         </Card>
@@ -74,7 +74,7 @@ export default class Students extends Component {
   facultyCards(items) {
     return (
       <React.Fragment >
-        {items.map((item) => <FacultyMember value={item} updateFaculty={this.updateFaculty} />)}
+        {items.map((item) => <FacultyMember value={item} updateFaculty={this.handleSearch} />)}
       </React.Fragment >
     );
   }
@@ -86,8 +86,8 @@ export default class Students extends Component {
     this.handleSearch()
   }
 
-  handleSearch() {
-    axios.post('/api/faculty/search', {
+  async handleSearch() {
+    await axios.post('/api/faculty/search', {
       search: this.state.search,
       filter_guide: this.state.filter_guide,
     })
@@ -107,16 +107,12 @@ export default class Students extends Component {
   }
 
   updateFaculty() {
-    axios.get('/api/faculty/')
-      .then((res) => {
-        if (res.data.result === 'success') {
-          this.setState({
-            faculty_list: res.data.faculty
-          });
-        }
-      })
-      .catch((error) => {
-        toast(error)
-      })
+    if (this.state.filter_guide === true) {
+      this.handleSearch()
+    }
+    else {
+      this.handleSearch()
+    }
+
   }
 } 

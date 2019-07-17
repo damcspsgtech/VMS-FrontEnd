@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Row, Card, CardBody, CardHeader, Button,
+  Row, Card, CardBody, CardHeader,
   Input, InputGroup, InputGroupAddon, InputGroupText
 } from 'reactstrap';
 import Student from "./Student"
@@ -17,7 +17,6 @@ export default class Students extends Component {
     }
     this.studentCards = this.studentCards.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
   }
   componentDidMount() {
     axios.get('/api/students/')
@@ -78,9 +77,6 @@ export default class Students extends Component {
         }
       })
     })
-
-  }
-  handleSearch() {
 
   }
 }

@@ -1,11 +1,9 @@
-import React, { Component, Suspense } from 'react';
-import { Redirect, Switch } from 'react-router-dom';
+import React, { Component } from 'react';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { toast } from 'react-toastify';
-
 import axios from 'axios';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -14,38 +12,32 @@ export default class Login extends Component {
     }
     this.onLogin = this.onLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.loading = this.loading.bind(this);
   }
+  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   onLogin() {
-    console.log('fired request')
     axios.post('/api/login', {
-      user_id: this.state.username,
-      user_pass: this.state.password
+      username: this.state.username,
+      password: this.state.password
     })
-      .then(function (response) {
-        console.log(response);
-        if (response.data === "Wrong Credentials") {
-          toast(response);
-          return (
-            <Container fluid>
-              <Suspense fallback={this.loading()}>
-                <Switch>
-                  <Redirect from="/login" to="/dashboard" />
-                </Switch>
-              </Suspense>
-            </Container>);
+      .then((res) => {
+        console.log(res);
+        if (res.data.result === "success") {
+          this.props.history.push('/')
         }
-        else
-          console.log(response);
+        else if (res.data.result === "failed-credentials") {
+          toast('failed')
+          toast.warning('Wrong Credentials')
+        }
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((error) => {
+        toast('hello\n' + error)
       })
   }
   handleChange(event) {
-    const name = event.target.name;
     this.setState(
-      { [name]: event.target.value }
+      { [event.target.name]: event.target.value }
     );
   }
   render() {
@@ -78,7 +70,7 @@ export default class Login extends Component {
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4" onClick={() => this.onLogin}>Login</Button>
+                          <Button color="primary" className="px-4" onClick={this.onLogin}>Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
                           <Button color="link" className="px-0" onClick={() => toast("Tsk Tsk, its probably the same as your username!")}>Forgot password?</Button>
@@ -95,3 +87,4 @@ export default class Login extends Component {
     );
   }
 }
+export default Login;

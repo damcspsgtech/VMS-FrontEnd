@@ -68,11 +68,13 @@ export default class Batch extends Component {
             </ButtonGroup>
           </ListGroupItemHeading>
           <ListGroupItemHeading>
-            <Badge outline color={parseColor(this.state.batch_color)}> {this.state.batch_id}</Badge>&nbsp;
+            <h4>
+              <Badge outline color={parseColor(this.state.batch_color)}> {this.state.batch_id}</Badge>&nbsp;
             <Badge color={parseColor(this.state.batch_color)}>Batch Count: {this.state.batch_count}</Badge>&nbsp;
             <Badge>Semester: {this.state.batch_semester}</Badge>&nbsp;
             <Badge color="dark">Tutor: {this.state.batch_tutor.name}</Badge>&nbsp;
-            <Badge color="primary">{this.state.batch_active ? 'Active' : 'In Active'}</Badge>
+            <Badge color={(this.state.batch_active === true) ? 'primary' : 'secondary'}>{this.state.batch_active ? 'Active' : 'In Active'}</Badge>
+            </h4>
           </ListGroupItemHeading>
         </ListGroupItem>
         <Collapse isOpen={this.state.collapse}>
@@ -102,7 +104,7 @@ export default class Batch extends Component {
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>Batch Tutor</InputGroupText>
                 </InputGroupAddon>
-                <Input name="batch_tutor" value={this.state.batch_tutor.id} onChange={this.handleChange.bind(this)} />
+                <Input name="batch_tutor" value={(this.state.batch_tutor.id)} onChange={this.handleChange.bind(this)} />
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_tutor.id}</Badge></InputGroupText>
                 </InputGroupAddon>
@@ -145,8 +147,13 @@ export default class Batch extends Component {
     })
   }
   handleChange(event) {
-    const name = event.target.name;
-    this.setState({ [name]: event.target.value });
+    if (event.target.name === 'batch_tutor') {
+      this.setState({ [event.target.name]: (event.target.value).toUpperCase() });
+    }
+    else {
+      this.setState({ [event.target.name]: (event.target.value) });
+    }
+
   };
 
   handleReset() {
@@ -163,16 +170,18 @@ export default class Batch extends Component {
   handleUpdate() {
     axios.post('/api/settings/batch/update', this.state)
       .then((res) => {
-        if (res.data.result === 'failed') {
-          toast.error('Failed update batch details!');
-        }
-        else if (res.data.result === 'success') {
+        if (res.data.result === 'success') {
           this.props.updateBatch();
-          toast.success('Updated batch successfuly!');
+        }
+        else if (res.data.result === 'failed') {
+          toast.error('Failed update batch details!');
         }
         else {
           toast.warning('Uncaught Exception!');
         }
+      })
+      .then(() => {
+        this.toggleCollapse();
       })
       .catch((error) => {
         toast.error('Failed to connect to proxy!\n' + error)

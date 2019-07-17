@@ -1,75 +1,81 @@
-export default {
-  items: [
-    {
-      name: 'Dashboard',
-      url: '/dashboard',
-      icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'NEW',
+module.exports = (count) => {
+  return {
+    items: [
+      {
+        title: true,
+        name: 'Dashboard',
+        wrapper: {            // optional wrapper object
+          element: '',        // required valid HTML5 element tag
+          attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+        },
+        class: ''             // optional class names space delimited list for title item ex: "text-center"
       },
-    },
-    {
-      title: true,
-      name: 'Internship',
-      wrapper: {            // optional wrapper object
-        element: '',        // required valid HTML5 element tag
-        attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+      {
+        name: 'Dashboard',
+        url: '/dashboard',
+        icon: 'icon-speedometer',
+        badge: {
+          variant: 'info',
+          text: 'UPDATES',
+        },
       },
-      class: ''             // optional class names space delimited list for title item ex: "text-center"
-    },
-    {
-      name: 'Students',
-      url: '/students ',
-      icon: 'icon-graduation',
-      children: [
-        {
-          name: 'Student List',
-          url: '/students',
-          icon: 'icon-list',
+      {
+        name: 'Students',
+        url: '/students',
+        icon: 'icon-graduation',
+        badge: {
+          variant: 'info',
+          text: count,
         },
-        {
-          name: 'Guide Allotment',
-          url: '/students/allotment',
-          icon: 'icon-user-following',
-        },
-      ],
-    },
-    {
-      name: 'Faculty',
-      url: '/faculty',
-      icon: 'icon-people',
-    },
-    {
-      name: 'Mail',
-      icon: 'cui-envelope-closed',
-      children: [
-        {
-          name: 'Student Report',
-          url: '/mail/student/report',
-          icon: 'icon-envelope-open'
-        },
-        {
-          name: 'Faculty Details',
-          url: '/mail/faculty_details',
-          icon: 'icon-envelope-open'
-        },
-      ]
-    },
-    {
-      title: true,
-      name: 'Administration',
-      wrapper: {            // optional wrapper object
-        element: '',        // required valid HTML5 element tag
-        attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
       },
-      class: ''             // optional class names space delimited list for title item ex: "text-center"
-    },
-
-    {
-      name: 'Settings',
-      url: '/settings',
-      icon: 'icon-settings',
-    },
-  ],
-};
+      {
+        name: 'Faculty',
+        url: '/faculty',
+        icon: 'icon-people',
+      },
+      {
+        name: 'Guide Allotment',
+        url: '/allotment',
+        icon: 'icon-user-following',
+      },
+      {
+        title: true,
+        name: 'Push Mail',
+        wrapper: {            // optional wrapper object
+          element: '',        // required valid HTML5 element tag
+          attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+        },
+        class: ''             // optional class names space delimited list for title item ex: "text-center"
+      },
+      {
+        name: 'Student Form',
+        icon: 'cui-envelope-closed',
+        url: '/mail/student/details',
+      },
+      {
+        name: 'Report Form',
+        url: '/mail/faculty_details',
+        icon: 'cui-envelope-closed',
+      },
+      {
+        name: 'Faculty Form',
+        url: '/mail/faculty_details',
+        icon: 'cui-envelope-closed',
+      },
+      {
+        title: true,
+        name: 'Administration',
+        wrapper: {            // optional wrapper object
+          element: '',        // required valid HTML5 element tag
+          attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+        },
+        class: ''             // optional class names space delimited list for title item ex: "text-center"
+      },
+      {
+        name: 'Settings',
+        url: '/settings',
+        icon: 'icon-settings',
+      },
+    ]
+  }
+}

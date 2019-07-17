@@ -1,0 +1,6 @@
+{
+  "name": "Allotment",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Allotment.js"
+}

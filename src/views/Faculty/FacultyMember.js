@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import {
-  Card, CardTitle, CardHeader, CardBody, Col, Badge, Media, Button, ListGroup, ListGroupItem,
-  InputGroup, InputGroupAddon, InputGroupText, ListGroupItemHeading, ListGroupItemText, ButtonGroup,
-  Modal, ModalHeader, ModalFooter, ModalBody
+  Card, CardTitle, CardHeader, CardBody, Col, Badge, Media, Button, ListGroup, ListGroupItem, InputGroup, InputGroupAddon, ListGroupItemHeading, ListGroupItemText, ButtonGroup, Modal, ModalHeader, ModalFooter, ModalBody
 } from 'reactstrap'
 import placeholder_img from '../../assets/img/avatars/user-placeholder.png';
 import axios from 'axios';
