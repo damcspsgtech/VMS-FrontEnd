@@ -31,6 +31,7 @@ export default class Batch extends Component {
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.handleActive = this.handleActive.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -84,7 +85,7 @@ export default class Batch extends Component {
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>Batch Count</InputGroupText>
                 </InputGroupAddon>
-                <Input name='batch_count' value={this.state.batch_count} onChange={this.handleChange.bind(this)} />
+                <Input name='batch_count' value={this.state.batch_count} onChange={this.handleChange.bind(this)} onKeyPress={this.handleKeyPress} />
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_count}</Badge></InputGroupText>
                 </InputGroupAddon>
@@ -94,7 +95,7 @@ export default class Batch extends Component {
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>Batch Email ID</InputGroupText>
                 </InputGroupAddon>
-                <Input name='batch_email' value={this.state.batch_email} onChange={this.handleChange.bind(this)} />
+                <Input name='batch_email' value={this.state.batch_email} onChange={this.handleChange.bind(this)} onKeyPress={this.handleKeyPress} />
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_email}</Badge></InputGroupText>
                 </InputGroupAddon>
@@ -104,7 +105,7 @@ export default class Batch extends Component {
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>Batch Tutor</InputGroupText>
                 </InputGroupAddon>
-                <Input name="batch_tutor" value={(this.state.batch_tutor.id)} onChange={this.handleChange.bind(this)} />
+                <Input name="batch_tutor" value={(this.state.batch_tutor.id)} onChange={this.handleChange.bind(this)} onKeyPress={this.handleKeyPress} />
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_tutor.id}</Badge></InputGroupText>
                 </InputGroupAddon>
@@ -208,5 +209,10 @@ export default class Batch extends Component {
       .catch((error) => {
         toast.error('Failed to connect to proxy!\n' + error)
       })
+  }
+  handleKeyPress(target) {
+    if (target.charCode === 13) {
+      this.handleUpdate();
+    }
   }
 }

@@ -20,6 +20,7 @@ export default class CourseSettings extends Component {
     this.handleAdd = this.handleAdd.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -47,7 +48,7 @@ export default class CourseSettings extends Component {
               <InputGroupAddon>
                 <InputGroupText>Course Name</InputGroupText>
               </InputGroupAddon>
-              <Input name="course_name" value={this.state.course_name} onChange={this.handleOnChange} placeholder="MSc. Software Systems"></Input>
+              <Input name="course_name" value={this.state.course_name} onChange={this.handleOnChange} onKeyPress={this.handleKeyPress} placeholder="MSc. Software Systems"></Input>
               <ButtonGroup className="float-right">
                 <Button color="success" className="float-right" onClick={this.handleAdd}>
                   Add
@@ -97,5 +98,11 @@ export default class CourseSettings extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     })
+  }
+
+  handleKeyPress(target) {
+    if (target.charCode === 13) {
+      this.handleAdd();
+    }
   }
 }

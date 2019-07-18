@@ -21,6 +21,7 @@ export default class BatchSettings extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
   componentDidUpdate(prevProps) {
     if (this.props.batches !== prevProps.batches) {
@@ -43,15 +44,15 @@ export default class BatchSettings extends Component {
               <InputGroupAddon>
                 <InputGroupText>Course Code</InputGroupText>
               </InputGroupAddon>
-              <Input name="course_id" placeholder="PX" value={this.state.course_id} onChange={this.handleOnChange}></Input>
+              <Input name="course_id" placeholder="PX" value={this.state.course_id} onChange={this.handleOnChange} ></Input>
               <InputGroupAddon>
                 <InputGroupText>Batch Semester</InputGroupText>
               </InputGroupAddon>
-              <Input name="batch_semester" placeholder="IV/VII/X" value={this.state.batch_semester} onChange={this.handleOnChange}></Input>
+              <Input name="batch_semester" placeholder="IV/VII/X" value={this.state.batch_semester} onChange={this.handleOnChange} ></Input>
               <InputGroupAddon>
                 <InputGroupText>Batch Year</InputGroupText>
               </InputGroupAddon>
-              <Input name="batch_year" placeholder="20XX" value={this.state.batch_year} onChange={this.handleOnChange}></Input>
+              <Input name="batch_year" placeholder="20XX" value={this.state.batch_year} onChange={this.handleOnChange} onKeyPress={this.handleKeyPress}></Input>
               <ButtonGroup className="float-right">
                 <Button color="success" className="float-right" onClick={this.handleAdd}>
                   Add
@@ -83,9 +84,16 @@ export default class BatchSettings extends Component {
   }
 
   handleOnChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
+    if (event.target.name === 'batch_semester' || event.target.name === 'course_id') {
+      this.setState({
+        [event.target.name]: (event.target.value).toUpperCase()
+      })
+    }
+    else {
+      this.setState({
+        [event.target.name]: (event.target.value)
+      })
+    }
   }
 
   handleAdd() {
@@ -106,5 +114,11 @@ export default class BatchSettings extends Component {
           toast.success('Batch ' + (this.state.batch_year).slice(2, 4) + this.state.course_id + ' has been added!')
         }
       })
+  }
+
+  handleKeyPress(target) {
+    if (target.charCode === 13) {
+      this.handleAdd();
+    }
   }
 }
