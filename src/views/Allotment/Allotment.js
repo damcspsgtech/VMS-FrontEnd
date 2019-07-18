@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Row, Col, Card, CardHeader, CardBody } from 'reactstrap'
+import { Row, Col, Card, CardHeader, CardBody, CardColumns } from 'reactstrap'
 import axios from 'axios'
 
 
@@ -33,7 +33,24 @@ export default class Allotment extends Component {
 
   }
 
-  onDragEnd() {
+  onDragEnd(result) {
+    const { destination, source, draggableId } = result;
+    if (!destination) {
+      return
+    }
+    if (destination.droppableId === source.droppabaleId && destination.index === source.index) {
+      return;
+    }
+
+    const start = this.state.columns[source.draggableId];
+    const end = this.state.columns[destination.draggableId]
+    if (start !== end) {
+
+    }
+
+    if (start === end) {
+
+    }
   }
   render() {
     return (
@@ -78,14 +95,16 @@ export default class Allotment extends Component {
                 <CardHeader>
                   Students
                 </CardHeader>
-                <Droppable droppableId="Students">
-                  {(provided) => (<CardBody innerRef={provided.innerRef}
-                    {...provided.droppableProps}>
-                    {this.state.students.map((student, index) => <Student key={student.roll_no} student={student} index={index} />)}
-                    {provided.placeholder}
-                  </CardBody>
-                  )}
-                </Droppable>
+                <CardColumns>
+                  <Droppable droppableId="Students">
+                    {(provided) => (<CardBody innerRef={provided.innerRef}
+                      {...provided.droppableProps}>
+                      {this.state.students.map((student, index) => <Student key={student.roll_no} student={student} index={index} />)}
+                      {provided.placeholder}
+                    </CardBody>
+                    )}
+                  </Droppable>
+                </CardColumns>
               </Card>
             </Col>
           </Row>
