@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card, CardTitle } from 'reactstrap';
 import { Draggable } from 'react-beautiful-dnd';
-import styled from 
+//import styled from 'styled-components'
 export default class Student extends Component {
   render() {
     return (

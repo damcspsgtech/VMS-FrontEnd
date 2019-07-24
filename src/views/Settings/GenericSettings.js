@@ -178,7 +178,7 @@ export default class GenericSettings extends Component {
   }
 
   handleSubmit() {
-    axios.post('/api/settings', {
+    axios.post('/api/settings/', {
       student_form: this.state.stud_form,
       report_form: this.state.report_form,
       faculty_form: this.state.faculty_form,

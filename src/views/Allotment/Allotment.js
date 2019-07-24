@@ -34,7 +34,7 @@ export default class Allotment extends Component {
   }
 
   onDragEnd(result) {
-    const { destination, source, draggableId } = result;
+    const { destination, source, /*draggableId*/ } = result;
     if (!destination) {
       return
     }
