@@ -61,7 +61,7 @@ export default class BatchSettings extends Component {
             </InputGroup>
           </ListGroupItem>
           {this.state.batches.map((batch) => <Batch value={batch} handleDelete={this.handleDelete} updateBatch={this.props.updateBatch} />)},
-    </ListGroup></div >
+    </ListGroup></div>
     ])
   }
 

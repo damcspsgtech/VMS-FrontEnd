@@ -58,9 +58,9 @@ export default class Students extends Component {
   }
   studentCards(items) {
     return (
-      <React.Fragment >
+      <React.Fragment>
         {items.map((item) => <Student student={item} />)}
-      </React.Fragment >
+      </React.Fragment>
     );
   }
   async handleChange(event) {

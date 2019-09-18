@@ -31,11 +31,12 @@ export default class Student extends Component {
       maxHeight: 64,
       maxWidth: 64,
     }
+    console.log((this.props.student));
     return (
       <Col xs="12" sm="6" md="4" lg="3" className="animated fadeIn">
         <Link className="text-decoration-none text-muted:hover" onClick={this.toggleInfo}>
           <Card >
-            <CardHeader >
+            <CardHeader>
               <CardTitle color={parseColor(this.props.student.Batch.color)} className={"float-right text-dark"}>
                 {this.props.student.name}<br></br>
                 <h3><Badge color={parseColor(this.props.student.Batch.color)} className="float-right">{this.props.student.roll_no}</Badge></h3>

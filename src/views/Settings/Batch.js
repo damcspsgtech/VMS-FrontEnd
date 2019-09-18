@@ -16,6 +16,7 @@ export default class Batch extends Component {
     this.state = {
       collapse: false,
       batch_id: this.props.value.id,
+      batch_code: this.props.value.batch_code,
       batch_semester: this.props.value.semester,
       batch_tutor: this.props.value.Tutor,
       batch_course: this.props.value.Course,
@@ -38,6 +39,7 @@ export default class Batch extends Component {
     if (this.props.value !== prevProps.value) {
       this.setState({
         batch_id: this.props.value.id,
+        batch_code: this.props.value.batch_code,
         batch_semester: this.props.value.semester,
         batch_tutor: this.props.value.Tutor,
         batch_course: this.props.value.Course,
@@ -70,7 +72,7 @@ export default class Batch extends Component {
           </ListGroupItemHeading>
           <ListGroupItemHeading>
             <h4>
-              <Badge outline color={parseColor(this.state.batch_color)}> {this.state.batch_id}</Badge>&nbsp;
+              <Badge outline color={parseColor(this.state.batch_color)}> {this.state.batch_code}</Badge>&nbsp;
             <Badge color={parseColor(this.state.batch_color)}>Batch Count: {this.state.batch_count}</Badge>&nbsp;
             <Badge>Semester: {this.state.batch_semester}</Badge>&nbsp;
             <Badge color="dark">Tutor: {this.state.batch_tutor.name}</Badge>&nbsp;
@@ -172,6 +174,7 @@ export default class Batch extends Component {
     axios.post('/api/settings/batch/update', this.state)
       .then((res) => {
         if (res.data.result === 'success') {
+          toast.success('Updated batch details!');
           this.props.updateBatch();
         }
         else if (res.data.result === 'failed') {
