@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { Container } from 'reactstrap';
-
+import Axios from "axios";
 import {
   AppFooter,
   AppHeader,
@@ -15,9 +15,18 @@ import {
   AppSidebarNav2 as AppSidebarNav,
 } from '@coreui/react';
 // sidebar nav config
-import navigation from '../../_nav';
-// routes config
 import routes from '../../routes';
+// routes config
+var count = async () => {
+  await Axios.get('/api/students/count')
+    .then((req, res) => {
+      if (res.data.result === 'success') {
+        return res.data.count;
+      }
+    })
+}
+const navigation = require('../../_nav')(count)
+
 
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
@@ -34,7 +43,7 @@ class DefaultLayout extends Component {
   render() {
     return (
       <div className="app">
-        I8OP0-0+=/*;'<AppHeader fixed>
+        <AppHeader fixed>
           <Suspense fallback={this.loading()}>
             <DefaultHeader onLogout={e => this.signOut(e)} />
           </Suspense>
@@ -54,7 +63,7 @@ class DefaultLayout extends Component {
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>
-                  {routes.map((route, idx) => {
+                  {(routes.map((route, idx) => {
                     return route.component ? (
                       <Route
                         key={idx}
@@ -64,9 +73,9 @@ class DefaultLayout extends Component {
                         render={props => (
                           <route.component {...props} />
                         )} />
-                    ) : (null);
-                  })}
-                  <Redirect from="/" to="/login" />
+                    ) : (null)
+                  }))}
+                  <Redirect from="/" to="/dashboard" />
                 </Switch>
               </Suspense>
             </Container>

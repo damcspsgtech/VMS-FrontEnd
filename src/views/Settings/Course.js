@@ -5,7 +5,7 @@ export default class Course extends Component {
   render() {
     return (
       <div class="animated fadeIn">
-        <ListGroupItem color="info">
+        <ListGroupItem color="white">
           <ListGroupItemHeading>
             {this.props.value.name}
             <Badge pill color="primary">{this.props.value.id}</Badge>
