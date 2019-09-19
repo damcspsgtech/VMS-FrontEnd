@@ -56,4 +56,4 @@
  - [ ] Have a complete update cycle as well as backup and restore on system failure.
 	- [ ] Figure out how to do this without requiring release server.
 		- Check feasabilty of polling github releases.
-	- [ ] 
+	- [ ] Design UI in stepping-stone, with extensibility in mind.
