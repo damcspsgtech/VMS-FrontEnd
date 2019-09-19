@@ -1,0 +1,59 @@
+# List of features for stepping-stone.
+ - [ ] User login & Session management.
+ - [ ] Setup site metadata, and description, robots.txt (lol)
+ - [x] CI/CD with `travis.ci`.
+    - [ ] Can do more here
+ - [x] Optimize navigation. (navbar)
+   - Might need more work.
+ - [ ] Design unit tests for all private packages.
+ - [x] Settings/Configuration
+   - [x] Generic settings
+     - [ ] Test when sheet urls change, have proper validation.
+   - [x] Batch settings
+   - [x] Course settings
+ - [x] Student List. 
+   - [x] Filtering by name & roll number.
+   - [x] Extended information, through modal or pop up.
+   - [ ] Parse google map locations to update city field. (this allows for city based metrics)
+   - [ ] Render student photos.
+ - [x] Faculty List.
+   - [x] Filtering by name & employee number.
+   - [x] Filtering by role (Guide). 
+   - [ ] Change badges to text, as they are non-responsive.
+   - [ ] Render photos from assets folder.
+ - [ ] Guide Allotment.
+   - [x] Install `react-beautiful-dnd` to make a dynamic drag and drop system. 
+   - [ ] Proper transitions CSS.
+ - [ ] Modify dashboard for stepping-stone. (default is being rendered)
+   - [ ] Metrics based on city.
+   - [ ] Metrics based on course.
+   - [ ] Comparisons based off batches.
+   - [ ] Comparisons based off semester (of the same batch).
+ - [x] Make faculty list filtering happen on the client.
+ - [ ] Check if site conforms to the latest event cycle standards for react.
+ - [ ] Change font to something appropriate.
+ - [ ] Profile website using appropriate tools.
+ - [ ] Migrate from predominantly message based REST calls to query parameter based.
+ - [ ] Migrate to `BrowserRouter`
+   - Need to check if this is necessary at all. `HashRouter` works just fine. 
+ - [ ] Write documentation and run basic docs server for future development.
+ - [ ] `Dockerfile` for both development and production.
+ - [ ] Orchestrate both development and production based containerization with `osiris`.
+
+# List of features for osiris/db
+ - [x] Migrate to express
+ - [x] Set up routes.
+ - [x] Design models.
+   - [ ] Setup data integration, or perform validation before data retrieval.
+ - [x] Optimize faculty_spreadsheet.
+ - [x] Optimize student_spreadsheet.
+ - [x] Find alternate for composite foreign key referencing in models design.
+ - [x] Migrate to postgres - (preferably run a container)
+ - [ ] Support sessions using sequelize based connectors.
+ - [ ] Design `nodemailer` scripts for push notifications.
+ - [ ] Setup `nginx`.
+    - [ ] Might not be needed with current complexity, but would make the server robust.
+ - [ ] Have a complete update cycle as well as backup and restore on system failure.
+	- [ ] Figure out how to do this without requiring release server.
+		- Check feasabilty of polling github releases.
+	- [ ] 
