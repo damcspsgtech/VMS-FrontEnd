@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  db:
+
+  osiris:
+
+    depends-on:
+      db
+    build:
+      context: https://github.com/damcs/osiris.git#master
+      volumes:
+        - ./osiris_data:/usr/src/osiris/
+
+  stepping-stone:
