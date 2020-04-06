@@ -18,6 +18,8 @@ export default class Students extends Component {
     this.studentCards = this.studentCards.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
+  
+
   componentDidMount() {
     axios.get('/api/students/')
       .then((res) => {

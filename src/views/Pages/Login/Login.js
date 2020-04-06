@@ -3,18 +3,26 @@ import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGr
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
+import  Cookies from "js-cookie";
+
+
+
+
 class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
       username: '',
       password: '',
+     // role: ''
     }
     this.onLogin = this.onLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.loading = this.loading.bind(this);
   }
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
+
+  
 
   onLogin() {
     axios.post('/api/login', {
@@ -24,9 +32,12 @@ class Login extends Component {
       .then((res) => {
         console.log(res);
         if (res.data.result === "success") {
+         // this.setState({isLoggedIn: true});
+          const cookie_value = {'user':this.state.username,'role':res.data.role}
+          Cookies.set("session", JSON.stringify(cookie_value))
           this.props.history.push('/')
         }
-        else if (res.data.result === "failed-credentials") {
+        else if (res.data.result === "failed-credentials" || res.data.result === 'failed-user-dne') {
           toast('failed')
           toast.warning('Wrong Credentials')
         }
@@ -35,6 +46,7 @@ class Login extends Component {
         toast('hello\n' + error)
       })
   }
+ 
   handleChange(event) {
     this.setState(
       { [event.target.name]: event.target.value }

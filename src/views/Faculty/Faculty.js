@@ -88,7 +88,7 @@ export default class Students extends Component {
 
   async handleSearch() {
     await axios.post('/api/faculty/search', {
-      search: this.state.search,
+      search: this.state.search.toLowerCase(),
       filter_guide: this.state.filter_guide,
     })
       .then((res) => {

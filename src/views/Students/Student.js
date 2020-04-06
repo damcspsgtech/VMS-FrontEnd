@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  Card, CardTitle, CardHeader, CardBody, Button,
+  Card, CardTitle, CardHeader, CardBody, Button,CardSubtitle,
   Col, Badge, Media, Modal, ModalHeader, ModalFooter, ModalBody, ListGroupItemText,
   ListGroup, ListGroupItem, ListGroupItemHeading,
 } from 'reactstrap';
@@ -31,7 +31,7 @@ export default class Student extends Component {
       maxHeight: 64,
       maxWidth: 64,
     }
-    console.log((this.props.student));
+   // console.log("dfdf"+(this.props.student.StudentImages));
     return (
       <Col xs="12" sm="6" md="4" lg="3" className="animated fadeIn">
         <Link className="text-decoration-none text-muted:hover" onClick={this.toggleInfo}>
@@ -41,14 +41,18 @@ export default class Student extends Component {
                 {this.props.student.name}<br></br>
                 <h3><Badge color={parseColor(this.props.student.Batch.color)} className="float-right">{this.props.student.roll_no}</Badge></h3>
               </CardTitle>
-              <Media className="float-left" style={imageSize} src={placeholder_img} alt="Photo" />
+             
+              <Media className="float-left" style={imageSize} src={(this.props.student.StudentImages !== null && this.props.student.StudentImages.image !== undefined) ? 'data:image/jpeg;base64,' + this.props.student.StudentImages.image : placeholder_img} />
             </CardHeader>
-            <CardBody className={'bg-secondary'}>
-              <h3>
+            {/* <CardBody className={'bg-secondary'}> */}
+            <CardBody>
+            <CardTitle>{this.props.student.organization_name}</CardTitle>
+            <CardSubtitle color={parseColor(this.props.student.Batch.color)}>{( this.props.student.address_city !== null && this.props.student.address_city !== undefined) ? 'City' : this.props.student.address_city}</CardSubtitle>
+              {/* <h3>
                 <Badge color="dark">{this.props.student.Guide.id === 'admin' ? 'Guide' : this.props.student.Guide.name}</Badge>&nbsp;
-                  <Badge color={parseColor(this.props.student.Batch.color)}>{this.props.student.address_city === null ? 'City' : this.props.student.address_city}</Badge>&nbsp;
-                  <Badge color="light">{this.props.student.project_category}</Badge>&nbsp;
-                </h3>
+                  
+                  
+                <6y/h3> */}
             </CardBody>
           </Card>
         </Link>

@@ -1,10 +1,20 @@
 import React, { Component } from 'react'
 import {
-  Card, CardTitle, CardHeader, CardBody, Col, Badge, Media, Button, ListGroup, ListGroupItem, InputGroup, InputGroupAddon, ListGroupItemHeading, ListGroupItemText, ButtonGroup, Modal, ModalHeader, ModalFooter, ModalBody
+  Card, CardTitle, CardHeader, CardBody, Col, Button, Badge, Media, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, ButtonGroup, Modal, ModalHeader, ModalFooter, ModalBody
 } from 'reactstrap'
+import { Switch, FormGroup, FormControlLabel } from '@material-ui/core';
 import placeholder_img from '../../assets/img/avatars/user-placeholder.png';
+import tick_icon from '../../assets/img/icons/tick.png';
+import cross_icon from '../../assets/img/icons/cross.png';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom'
+let reader = new FileReader();
+
+
+
+const icon = { "tick": tick_icon, "cross": cross_icon }
+
 
 export default class FacultyMember extends Component {
   constructor(props) {
@@ -14,11 +24,14 @@ export default class FacultyMember extends Component {
       id: this.props.value.id,
       guide: this.props.value.is_guide,
     };
+
     this.toggleGuide = this.toggleGuide.bind(this);
     this.toggleInfo = this.toggleInfo.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
 
   }
+
+
 
   componentDidUpdate(prevProps) {
     if (this.props.value.id !== prevProps.value.id) {
@@ -29,48 +42,53 @@ export default class FacultyMember extends Component {
     }
   }
 
+
+
   render() {
     const maxSize = {
       maxHeight: 64,
-      maxWidth: 64
+      maxWidth: 64,
+      
     }
-    return (<React.Fragment>
-      <Col xs="12" sm="6" md="4" lg="3" className="animated fadeIn">
-        <Card>
-          <CardHeader>
-            <CardTitle className="float-right">
-              {this.props.value.title + this.props.value.name}<br></br>
-              <h3>
-                <Badge color="dark" className="float-right">
-                  {this.props.value.id}
-                </Badge>
-              </h3>
-            </CardTitle>
-            <Media top right className="float-left" style={maxSize} src={placeholder_img} alt="Photo" />
-          </CardHeader>
-          <CardBody color="secondary">
-            <InputGroup>
-              <InputGroupAddon className="float-left">
-                <h4>
-                  <Badge>
-                    {this.props.value.designation}
-                  </Badge>
-                </h4>
-              </InputGroupAddon>
-              <InputGroupAddon className="float-right">
 
-              </InputGroupAddon>
-            </InputGroup>
-            <ButtonGroup className="float-right">
-              <Button outline active={this.state.guide} className="float-right" color="danger" onClick={this.toggleGuide}>
-                {this.state.guide ? 'Guide' : 'Not a Guide'}
-              </Button>
-              <Button className="float-right" color="info" onClick={this.toggleInfo}>
-                Information
-                </Button>
-            </ButtonGroup>
-          </CardBody>
-        </Card>
+    const iconSize = {
+      maxHeight: 20,
+      maxWidth: 20,
+      padding: 5,
+    }
+
+    return (<React.Fragment>
+
+      <Col xs="12" sm="6" md="4" lg="3" className="animated fadeIn">
+     
+          <Card   outline color="secondary">
+         
+           <CardHeader onClick={this.toggleInfo}>
+           <CardTitle  right className={"float-right"}>
+            {this.props.value.title + this.props.value.name}
+            <h3><Badge color="dark" className={"float-right"}>{this.props.value.id}</Badge></h3>
+              
+           </CardTitle>
+
+           </CardHeader>
+          
+            
+            <CardBody >
+            
+            <FormControlLabel  className="float-right text-dark" 
+                  control={<Switch checked={this.state.guide} onChange={this.toggleGuide} color="primary" />}
+                  label={<font color={this.state.guide ? "green":"red"}>{this.state.guide ? "Guide" : "Not a Guide"}</font>}
+                  labelPlacement="top" />
+             <Link className="text-decoration-none text-muted:hover" onClick={this.toggleInfo}>
+            
+            <Media  style={maxSize} src={(this.props.value.image) ? 'data:image/jpeg;base64,' + this.props.value.image : placeholder_img} />
+         </Link>
+            </CardBody>
+          </Card>
+      
+      
+        
+
         <Modal className="modal-primary" isOpen={this.state.info} toggle={this.toggleInfo}>
           <ModalHeader className="block" toggle={this.toggleInfo}>{this.props.value.title + this.props.value.name}
             <h3><Badge color="dark">{this.props.value.id}</Badge></h3>
@@ -81,10 +99,10 @@ export default class FacultyMember extends Component {
             </ListGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.toggleInfo}>Okay</Button>
+            <Button variant="contained" onClick={this.toggleInfo}>Okay</Button>
           </ModalFooter>
         </Modal>
-
+        {/* </ThemeProvider> */}
       </Col>
     </React.Fragment >
     );

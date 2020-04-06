@@ -1,5 +1,5 @@
 import React, { Component, lazy, Suspense } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import { Pie, Bar, HorizontalBar, Line } from 'react-chartjs-2';
 import {
   Badge,
   Button,
@@ -22,6 +22,8 @@ import {
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Widget03 = lazy(() => import('../Widgets/Widget03'));
 
@@ -45,47 +47,50 @@ const cardChartData1 = {
 };
 
 const cardChartOpts1 = {
+  cutoutPercentage: 50,
   tooltips: {
     enabled: false,
     custom: CustomTooltips
   },
   maintainAspectRatio: false,
   legend: {
-    display: false,
+    display: true,
+    //align: 'start',
+     position: 'bottom',
+    labels: {
+      boxWidth:10,
+      fontColor:'white',
+      fontSize:10
+    }
   },
   scales: {
     xAxes: [
       {
+        display: false,
         gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent',
+         display: false,
         },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
-        },
-
       }],
     yAxes: [
       {
         display: false,
-        ticks: {
-          display: false,
-          min: Math.min.apply(Math, cardChartData1.datasets[0].data) - 5,
-          max: Math.max.apply(Math, cardChartData1.datasets[0].data) + 5,
-        },
+        // ticks: {
+        //   display: false,
+        //   min: Math.min.apply(Math, cardChartData1.datasets[0].data) - 5,
+        //   max: Math.max.apply(Math, cardChartData1.datasets[0].data) + 5,
+        // },
       }],
   },
-  elements: {
-    line: {
-      borderWidth: 1,
-    },
-    point: {
-      radius: 4,
-      hitRadius: 10,
-      hoverRadius: 4,
-    },
-  }
+  // elements: {
+  //   line: {
+  //     borderWidth: 1,
+  //   },
+  //   point: {
+  //     radius: 4,
+  //     hitRadius: 10,
+  //     hoverRadius: 4,
+  //   },
+  // }
 }
 
 
@@ -210,19 +215,35 @@ const cardChartOpts4 = {
     custom: CustomTooltips
   },
   maintainAspectRatio: false,
-  legend: {
-    display: false,
-  },
+  // legend: {
+  //   display: false,
+  // },
   scales: {
     xAxes: [
       {
-        display: false,
+          gridLines: {
+            display:false
+        },
         barPercentage: 0.6,
+        ticks: {
+          fontColor: 'white',
+        },
       }],
     yAxes: [
       {
-        display: false,
+        gridLines: {
+          display:false
+      },
+      ticks: {
+        fontColor: 'white',
+      },
+       
+         //display: false,
+      //   barPercentage: 0.6,
       }],
+  },
+  legend: {
+    display: false,
   },
 };
 
@@ -431,6 +452,7 @@ const mainChartOpts = {
         gridLines: {
           drawOnChartArea: false,
         },
+
       }],
     yAxes: [
       {
@@ -456,37 +478,113 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
-    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
+    // this.toggle = this.toggle.bind(this);
+    // this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
     this.state = {
-      dropdownOpen: false,
-      radioSelected: 2,
+     // dropdownOpen: false,
+    //  radioSelected: 2,
+      industryVSinstitute: {},
+      studentVScity: {},
     };
   }
+  componentDidMount() {
 
-  toggle() {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen,
+    axios.get('/api/students/industryVSinstitute')
+    .then((res) => {
+      const industryVSinstitute = res.data.industryVSinstitute
+      let city = [];  
+      let student_count = [];  
+      industryVSinstitute.forEach(record => {  
+          city.push(record.project_category);  
+          student_count.push(record.student_count);  
+      });  
+      this.setState({  
+        industryVSinstitute: {  
+        labels: city,  
+        datasets: [{  
+              //  label: 'Student VS City',  
+          data: student_count,
+          backgroundColor: ['rgba(255,255,255,.3)','rgba(255,255,255,.6)'],
+          borderColor: 'transparent',  
+                 
+          }]  
+        }       
     });
-  }
+   
+ })
+  
 
-  onRadioBtnClick(radioSelected) {
-    this.setState({
-      radioSelected: radioSelected,
-    });
+    axios.get('/api/students/studentVScity')
+      .then((res) => {
+        const studentVScity = res.data.studentVScity
+        let city = [];  
+        let student_count = [];  
+        studentVScity.forEach(record => {  
+            city.push(record.address_city);  
+            student_count.push(record.student_count);  
+        });  
+        this.setState({  
+           studentVScity: {  
+               labels: city,  
+               datasets: [{  
+                //  label: 'Student VS City',  
+                  data: student_count,
+                  backgroundColor: 'rgba(255,255,255,.3)',
+                  borderColor: 'transparent',  
+                   
+               }]  
+           }       
+      });
+     
+   })
   }
+  // toggle() {
+  //   this.setState({
+  //     dropdownOpen: !this.state.dropdownOpen,
+  //   });
+  // }
+
+  // onRadioBtnClick(radioSelected) {
+  //   this.setState({
+  //     radioSelected: radioSelected,
+  //   });
+  // }
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   render() {
-
+    console.log(this.state.studentVScity)
     return (
+      
       <div className="animated fadeIn">
         <Row>
-          <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-info">
+        <Col xs="12" sm="6" lg="3">
+            <Card className="text-white bg-danger">
               <CardBody className="pb-0">
+                {/* <ButtonGroup className="float-right">
+                  <ButtonDropdown id='card4' isOpen={this.state.card4} toggle={() => { this.setState({ card4: !this.state.card4 }); }}>
+                    <DropdownToggle caret className="p-0" color="transparent">
+                      <i className="icon-settings"></i>
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                      <DropdownItem>Action</DropdownItem>
+                      <DropdownItem>Another action</DropdownItem>
+                      <DropdownItem>Something else here</DropdownItem>
+                    </DropdownMenu>
+                  </ButtonDropdown>
+                </ButtonGroup> */}
+                <div className="text-value">Students VS City</div>
+                {/* <div>Members online</div> */}
+              </CardBody>
+              <div className="chart-wrapper mx-3" style={{ height: '150px' }}>
+                <HorizontalBar data={this.state.studentVScity} options={cardChartOpts4} height={70} />
+              </div>
+            </Card>
+          </Col>
+           <Col xs="12" sm="6" lg="3">
+            <Card className="text-white bg-info">
+              {/* <CardBody className="pb-0">
                 <ButtonGroup className="float-right">
                   <ButtonDropdown id='card1' isOpen={this.state.card1} toggle={() => { this.setState({ card1: !this.state.card1 }); }}>
                     <DropdownToggle caret className="p-0" color="transparent">
@@ -500,43 +598,44 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </ButtonDropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
-                <div>Members online</div>
+                <div className="text-value">Industry VS Institute</div>
+                
+              </CardBody> */}
+              <div className="chart-wrapper mx-3" style={{ height: '205px' }}>
+                <Pie data={this.state.industryVSinstitute} options={cardChartOpts1} />
+              </div>
+            </Card>
+          </Col> 
+
+          <Col xs="12" sm="6" lg="3">
+            <Card className="text-white bg-info">
+              <CardBody className="pb-0">
+                {/* <ButtonGroup className="float-right">
+                  <ButtonDropdown id='card1' isOpen={this.state.card1} toggle={() => { this.setState({ card1: !this.state.card1 }); }}>
+                    <DropdownToggle caret className="p-0" color="transparent">
+                      <i className="icon-settings"></i>
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                      <DropdownItem>Action</DropdownItem>
+                      <DropdownItem>Another action</DropdownItem>
+                      <DropdownItem disabled>Disabled action</DropdownItem>
+                      <DropdownItem>Something else here</DropdownItem>
+                    </DropdownMenu>
+                  </ButtonDropdown>
+                </ButtonGroup> */}
+                <div className="text-value">Students VS City</div>
+                {/* <div>Members online</div> */}
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+              <div className="chart-wrapper mx-3" style={{ height: '150px' }}>
                 <Line data={cardChartData2} options={cardChartOpts2} height={70} />
               </div>
             </Card>
           </Col>
 
-          <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-primary">
-              <CardBody className="pb-0">
-                <ButtonGroup className="float-right">
-                  <Dropdown id='card2' isOpen={this.state.card2} toggle={() => { this.setState({ card2: !this.state.card2 }); }}>
-                    <DropdownToggle className="p-0" color="transparent">
-                      <i className="icon-location-pin"></i>
-                    </DropdownToggle>
-                    <DropdownMenu right>
-                      <DropdownItem>Action</DropdownItem>
-                      <DropdownItem>Another action</DropdownItem>
-                      <DropdownItem>Something else here</DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                </ButtonGroup>
-                <div className="text-value">9.823</div>
-                <div>Members online</div>
-              </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData1} options={cardChartOpts1} height={70} />
-              </div>
-            </Card>
-          </Col>
-
-          <Col xs="12" sm="6" lg="3">
+           <Col xs="12" sm="6" lg="3">
             <Card className="text-white bg-warning">
               <CardBody className="pb-0">
-                <ButtonGroup className="float-right">
+                {/* <ButtonGroup className="float-right">
                   <Dropdown id='card3' isOpen={this.state.card3} toggle={() => { this.setState({ card3: !this.state.card3 }); }}>
                     <DropdownToggle caret className="p-0" color="transparent">
                       <i className="icon-settings"></i>
@@ -547,39 +646,16 @@ class Dashboard extends Component {
                       <DropdownItem>Something else here</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
-                </ButtonGroup>
+                </ButtonGroup> */}
                 <div className="text-value">9.823</div>
-                <div>Members online</div>
               </CardBody>
-              <div className="chart-wrapper" style={{ height: '70px' }}>
+              <div className="chart-wrapper" style={{ height: '150px' }}>
                 <Line data={cardChartData3} options={cardChartOpts3} height={70} />
               </div>
             </Card>
           </Col>
 
-          <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-danger">
-              <CardBody className="pb-0">
-                <ButtonGroup className="float-right">
-                  <ButtonDropdown id='card4' isOpen={this.state.card4} toggle={() => { this.setState({ card4: !this.state.card4 }); }}>
-                    <DropdownToggle caret className="p-0" color="transparent">
-                      <i className="icon-settings"></i>
-                    </DropdownToggle>
-                    <DropdownMenu right>
-                      <DropdownItem>Action</DropdownItem>
-                      <DropdownItem>Another action</DropdownItem>
-                      <DropdownItem>Something else here</DropdownItem>
-                    </DropdownMenu>
-                  </ButtonDropdown>
-                </ButtonGroup>
-                <div className="text-value">9.823</div>
-                <div>Members online</div>
-              </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Bar data={cardChartData4} options={cardChartOpts4} height={70} />
-              </div>
-            </Card>
-          </Col>
+          
         </Row>
         <Row>
           <Col>

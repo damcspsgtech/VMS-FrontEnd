@@ -2,6 +2,8 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { Container } from 'reactstrap';
+import Cookies from "js-cookie";
+import Can from "../../containers/Can";
 import Axios from "axios";
 import {
   AppFooter,
@@ -25,11 +27,14 @@ var count = async () => {
       }
     })
 }
-const navigation = require('../../_nav')(count)
+const navigation_admin = require('../../_nav_admin')(count)
+const navigation_tutor = require('../../_nav_tutor')(count)
 
 
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
+
+
 
 class DefaultLayout extends Component {
 
@@ -37,6 +42,7 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     e.preventDefault()
+    Cookies.remove("session")
     this.props.history.push('/login')
   }
 
@@ -53,7 +59,7 @@ class DefaultLayout extends Component {
             <AppSidebarHeader />
             <AppSidebarForm />
             <Suspense>
-              <AppSidebarNav navConfig={navigation} {...this.props} router={router} />
+              <AppSidebarNav navConfig={(JSON.parse(Cookies.get("session")).role === "admin")? navigation_admin : navigation_tutor} {...this.props} router={router} />
             </Suspense>
             <AppSidebarFooter />
             <AppSidebarMinimizer />
@@ -64,15 +70,28 @@ class DefaultLayout extends Component {
               <Suspense fallback={this.loading()}>
                 <Switch>
                   {(routes.map((route, idx) => {
+
                     return route.component ? (
+          
                       <Route
                         key={idx}
                         path={route.path}
                         exact={route.exact}
                         name={route.name}
                         render={props => (
-                          <route.component {...props} />
-                        )} />
+                          <Can
+                            role={JSON.parse(Cookies.get("session")).role}
+                            perform={route.path + "-page:visit"}
+                            yes={() => (
+
+                              <route.component {...props} />
+
+                            )}
+                          //  no={() => (null)}
+                              no={() =><Redirect to={{ pathname: "/" }}/>}
+                          />
+                        )}
+                      />
                     ) : (null)
                   }))}
                   <Redirect from="/" to="/dashboard" />
