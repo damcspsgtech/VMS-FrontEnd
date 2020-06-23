@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import Student from "./Student";
-import { Card, CardBody, CardHeader } from "reactstrap";
+import Guide from "./Guide";
+import { Row, Card, CardBody, CardHeader } from "reactstrap";
+import styled from "styled-components";
 
 const grid = 8;
 
@@ -11,6 +13,11 @@ const divStyle = {
   maxHeight: "100px",
   position: "relative"
 };
+
+const Container = styled.div`
+  padding: 8px;
+  cmargin-bottom: 8px;
+`;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
@@ -28,39 +35,17 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 export default class Map extends Component {
   render() {
     return (
-      <Draggable draggableId={this.props.map.guide} index={this.props.index}>
-        {provided => (
-          <div
-            {...provided.dragHandleProps}
-            {...provided.draggableProps}
-            ref={provided.innerRef}
-          >
-            <Card>
-              <CardHeader>{this.props.map.guide}</CardHeader>
-              <Droppable droppableId={this.props.map.guide}>
-                {provided => (
-                  <div
-                    style={divStyle}
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                  >
-                    <CardBody>
-                      {this.props.map.students_alloted.map((student, index) => (
-                        <Student
-                          key={student.id}
-                          student={student}
-                          index={index}
-                        />
-                      ))}
-                      {provided.placeholder}
-                    </CardBody>
-                  </div>
-                )}
-              </Droppable>
-            </Card>
-          </div>
-        )}
-      </Draggable>
-    );
+          <div>
+            <Guide key={this.props.guide.id} guide={this.props.guide} index={0} />
+            
+            {this.props.map.students_alloted.map((student, index) => (
+              <Student
+                key={student}
+                student={this.props.student[student]}
+                index={index}
+              />
+            ))}              
+        </div>
+    )
   }
 }

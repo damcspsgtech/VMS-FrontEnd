@@ -1,8 +1,17 @@
 import React, { Component } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Col, Badge } from "reactstrap";
+import styled from "styled-components";
 
 const grid = 8;
+
+const Container = styled.div`
+  padding: 8px;
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  background-color: white;
+`;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
@@ -28,9 +37,9 @@ export default class Guide extends Component {
             ref={provided.innerRef}
           >
             <Col style={{ padding: "3px" }}>
-              <Badge color="info" pill>
-                <h5>{this.props.guide.name}</h5>
-              </Badge>
+              <Container>
+                <h5 style={{ padding: "4px" }}>{this.props.guide.name}</h5>
+              </Container>
             </Col>
           </div>
         )}

@@ -1,12 +1,25 @@
 import React, { Component } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Col, Badge } from "reactstrap";
+import styled from "styled-components";
 
 const grid = 8;
 
 const colStyle = {
   padding: "3px"
 };
+
+
+const Container = styled.div`
+  padding: 8px;
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  background-color: white;
+`;
+
+const Elements = styled.div`
+`;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
@@ -33,9 +46,11 @@ export default class Student extends Component {
           >
             {" "}
             <Col style={colStyle}>
-              <Badge color="info" pill>
-                <h5>{this.props.student.roll_no}</h5>
-              </Badge>
+              <Container >
+                <h5 style={{ padding: "2px" }}>{this.props.student.roll_no}</h5>
+                <Elements>{this.props.student.name}</Elements>
+                <Elements>{this.props.student.project_domain_keywords}</Elements>
+              </Container>
             </Col>
           </div>
         )}
