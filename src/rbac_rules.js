@@ -22,7 +22,8 @@ const rules = {
         "/home-page:visit",
         "/dashboard-page:visit",
         "/faculty-page:visit",
-        "/students-page:visit"
+        "/students-page:visit",
+        "/allotment-page:visit",
       ]
     }
   };
