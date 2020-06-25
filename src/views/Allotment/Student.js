@@ -37,6 +37,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 export default class Student extends Component {
   render() {
     return (
+        
       <Draggable draggableId={this.props.student.id} index={this.props.index}>
         {provided => (
           <div
@@ -51,7 +52,7 @@ export default class Student extends Component {
                 <Elements>{this.props.student.name}</Elements>
                 <Elements>{this.props.student.project_domain_keywords}</Elements>
               </Container>
-            </Col>
+              </Col>
           </div>
         )}
       </Draggable>

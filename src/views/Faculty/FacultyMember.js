@@ -65,8 +65,8 @@ export default class FacultyMember extends Component {
          
            <CardHeader onClick={this.toggleInfo}>
            <CardTitle  right className={"float-right"}>
-            {this.props.value.title + this.props.value.name}
-            <h3><Badge color="dark" className={"float-right"}>{this.props.value.id}</Badge></h3>
+            {this.props.value.title + this.props.value.name.toUpperCase()}
+            <h3><Badge color="dark" className={"float-right"}>{this.props.value.id.toUpperCase()}</Badge></h3>
               
            </CardTitle>
 
@@ -90,8 +90,8 @@ export default class FacultyMember extends Component {
         
 
         <Modal className="modal-primary" isOpen={this.state.info} toggle={this.toggleInfo}>
-          <ModalHeader className="block" toggle={this.toggleInfo}>{this.props.value.title + this.props.value.name}
-            <h3><Badge color="dark">{this.props.value.id}</Badge></h3>
+          <ModalHeader className="block" toggle={this.toggleInfo}>{this.props.value.title + this.props.value.name.toUpperCase()}
+            <h3><Badge color="dark">{this.props.value.id.toUpperCase()}</Badge></h3>
           </ModalHeader>
           <ModalBody>
             <ListGroup>

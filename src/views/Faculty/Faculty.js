@@ -16,12 +16,15 @@ export default class Students extends Component {
       faculty_list: [],
       search: '',
       filter_guide: false,
+      filter_notguide: false,
     }
     this.facultyCards = this.facultyCards.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.updateFaculty = this.updateFaculty.bind(this);
     this.handleFilterGuide = this.handleFilterGuide.bind(this);
+    this.handleFilterNotGuide = this.handleFilterNotGuide.bind(this);
+    this.clearFilter = this.clearFilter.bind(this);
   }
 
   componentDidMount() {
@@ -53,13 +56,28 @@ export default class Students extends Component {
               </InputGroupAddon>
               <InputGroupAddon>
                 <ButtonGroup>
-                  <Button color="primary" outline active={this.state.filter_guide} onClick={this.handleFilterGuide}>
+                  <Button color="success" outline active={this.state.filter_guide} onClick={this.handleFilterGuide}>
                     Guide
+                  </Button>
+
+                </ButtonGroup>
+                <ButtonGroup>
+                  <Button color="danger" outline active={this.state.filter_notguide} onClick={this.handleFilterNotGuide}>
+                    Not a Guide
                   </Button>
                 </ButtonGroup>
               </InputGroupAddon>
               <Input name="search" placeholder="Search" value={this.state.search} onChange={this.handleChange.bind(this)} />
+              <InputGroupAddon>
+                <ButtonGroup>
+                  <Button color="primary" onClick={this.clearFilter}>
+                    clear
+                  </Button>
+
+                </ButtonGroup>
+              </InputGroupAddon>
             </InputGroup>
+
           </CardHeader>
           <CardBody>
             <Row>
@@ -90,6 +108,7 @@ export default class Students extends Component {
     await axios.post('/api/faculty/search', {
       search: this.state.search.toLowerCase(),
       filter_guide: this.state.filter_guide,
+      filter_notguide: this.state.filter_notguide,
     })
       .then((res) => {
         if (res.data.result === 'success') {
@@ -99,9 +118,29 @@ export default class Students extends Component {
         }
       })
   }
+
+  async clearFilter() {
+    await this.setState({
+
+      filter_guide: false,
+      filter_notguide: false,
+    });
+    this.handleSearch();
+  }
+
   async handleFilterGuide() {
     await this.setState({
-      filter_guide: !this.state.filter_guide
+      search: '',
+      filter_guide: !this.state.filter_guide,
+      filter_notguide: false,
+    });
+    this.handleSearch();
+  }
+
+  async handleFilterNotGuide() {
+    await this.setState({
+      filter_notguide: !this.state.filter_notguide,
+      filter_guide: false,
     });
     this.handleSearch();
   }

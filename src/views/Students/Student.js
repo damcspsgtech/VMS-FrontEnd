@@ -6,6 +6,7 @@ import {
 } from 'reactstrap';
 import parseColor from '../Colors';
 import placeholder_img from '../../assets/img/avatars/user-placeholder.png';
+
 import { Link } from 'react-router-dom'
 
 
@@ -42,7 +43,7 @@ export default class Student extends Component {
                 <h3><Badge color={parseColor(this.props.student.Batch.color)} className="float-right">{this.props.student.roll_no}</Badge></h3>
               </CardTitle>
              
-              <Media className="float-left" style={imageSize} src={(this.props.student.StudentImages !== null && this.props.student.StudentImages.image !== undefined) ? 'data:image/jpeg;base64,' + this.props.student.StudentImages.image : placeholder_img} />
+              <Media className="float-left" style={imageSize} src={(this.props.student.StudentImages !== null ?  this.props.student.StudentImages.image : false) ? 'data:image/jpeg;base64,' + this.props.student.StudentImages.image : placeholder_img} />
             </CardHeader>
             {/* <CardBody className={'bg-secondary'}> */}
             <CardBody>

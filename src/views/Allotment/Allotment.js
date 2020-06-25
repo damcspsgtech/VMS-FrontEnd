@@ -430,7 +430,8 @@ export default class Allotment extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Row>
         
-          <Col style={colStyle}>            
+          {/* <Col style={colStyle} >             */}
+            <Col>
             <Card>
               <CardHeader>
                 <h2>Guide</h2>
@@ -454,7 +455,9 @@ export default class Allotment extends Component {
             </Card>
           </Col>
 
-          <Col style={allotmentColStyle}>  
+          {/* <Col style={allotmentColStyle}>  */}
+
+          <Col xs="4" sm="4" md="4" lg="4">  
             <Card>
               <CardHeader>
                 <h2>Allotment</h2>
@@ -512,9 +515,11 @@ export default class Allotment extends Component {
           </Card>
             
           </Col>
-
-          <Col style={studStyle}>
-            <Card>
+          {/* <Col style={studStyle}> */}
+          
+          <Col xs="5" sm="5" md="5" lg="5" >
+         
+            <Card >
               <CardHeader>
                 <h2>Students</h2>
               </CardHeader>
@@ -526,20 +531,27 @@ export default class Allotment extends Component {
                     {...provided.droppableProps}
                   >
                     <CardBody>
+                    <Row>
                       {students.list.map((student, index) => (
+                        <Col xs="12" sm="12" md="6" lg="6" className="animated fadeIn">
                         <Student
                           key={studentDict[student].roll_no}
                           student={studentDict[student]}
                           index={index}
                         />
+                        </Col>
+                         
                       ))}
+                      </Row>
                       {provided.placeholder}
+                      
                     </CardBody>
                   </div>
                 )}
               </Droppable>
             </Card>
-          </Col>
+
+          </Col>        
         </Row>
       </DragDropContext>
       

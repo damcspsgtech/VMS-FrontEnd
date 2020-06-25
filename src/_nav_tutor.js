@@ -63,6 +63,8 @@ module.exports = (count) => {
         url: '/mail/faculty_details',
         icon: 'cui-envelope-closed',
       },
+
+    
     ]
   }
 }

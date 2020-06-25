@@ -26,14 +26,14 @@ class Login extends Component {
 
   onLogin() {
     axios.post('/api/login', {
-      username: this.state.username.toUpperCase(),
+      username: this.state.username,
       password: this.state.password
     })
       .then((res) => {
         console.log(res);
         if (res.data.result === "success") {
          // this.setState({isLoggedIn: true});
-          const cookie_value = {'user':this.state.username.toUpperCase(),'role':res.data.role}
+          const cookie_value = {'user':this.state.username,'role':res.data.role}
           Cookies.set("session", JSON.stringify(cookie_value))
           this.props.history.push('/')
         }
