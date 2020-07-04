@@ -6,7 +6,12 @@ import axios from 'axios';
 import  Cookies from "js-cookie";
 
 
-
+// let axiosConfig = {
+//   headers: {
+//       'Content-Type': 'application/json;charset=UTF-8',
+//       "Access-Control-Allow-Origin": "*",
+//   }
+// };
 
 class Login extends Component {
   constructor(props) {
@@ -33,7 +38,7 @@ class Login extends Component {
         console.log(res);
         if (res.data.result === "success") {
          // this.setState({isLoggedIn: true});
-          const cookie_value = {'user':this.state.username,'role':res.data.role}
+          const cookie_value = {'user':this.state.username,'role':res.data.role,'batch':res.data.batch}
           Cookies.set("session", JSON.stringify(cookie_value))
           this.props.history.push('/')
         }

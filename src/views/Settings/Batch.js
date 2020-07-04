@@ -151,7 +151,7 @@ export default class Batch extends Component {
   }
   handleChange(event) {
     if (event.target.name === 'batch_tutor') {
-      this.setState({ [event.target.name]: (event.target.value).toUpperCase() });
+      this.setState({ [event.target.name]: (event.target.value).toLowerCase() });
     }
     else {
       this.setState({ [event.target.name]: (event.target.value) });
