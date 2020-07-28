@@ -285,15 +285,16 @@ uploadPhoto(){
 		
 	  };
 	  fetch('https://api.amcspsgtech.in/v1/student/update/profilePhoto/'+this.state.roll_no, requestOptions).then(res => res.json())
-		.then((res) => {
-		  if (res) {
-			axiosInstance.post('api/students/uploadPhoto',{roll_no:this.state.roll_no,url:res.url})
+		.then((s3res) => {
+		  if (s3res) {
+			axiosInstance.post('api/students/uploadPhoto',{roll_no:this.state.roll_no,url:s3res.url})
 			   .then((res) => {
 			  	if(res.data.result === 'success'){
 					  this.setState({
-						image: res.data.imageURL
+						image: s3res.url
 				  });
-			  
+				  console.log(res.data)
+				  console.log(this.state)
 			  }
 			  else{
 				  toast('Failed To Upload Photo,Try Later')	

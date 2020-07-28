@@ -4,7 +4,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Cookies from "js-cookie";
 import { toast } from 'react-toastify';
 import axiosInstance from '../../../axiosInstance';
-import { Fab, Badge, Grid } from '@material-ui/core';
+import { Fab, Badge, Grid, ListItemSecondaryAction } from '@material-ui/core';
 
 import DatePicker from 'react-datetime-picker';
 
@@ -13,7 +13,7 @@ const whiteBG = {
     backgroundColor: '#fff',// borderColor: '#333'
 }
 
-const cities = ['Bengaluru','Chennai','Coimbatore','Hyderabad','Mumbai','Pune'];
+const cities = ['bengaluru','chennai','coimbatore','hyderabad','mumbai','pune'];
 
 
 export default class StudentProjectForm extends Component {
@@ -27,7 +27,7 @@ export default class StudentProjectForm extends Component {
             organization_name: '',
             addressLine1: '',
             addressLine2: '',
-            city: '',
+            city: 'bengaluru',
             state: '',
             other_city: '',
             country: '',
@@ -64,7 +64,7 @@ export default class StudentProjectForm extends Component {
                     let res_city= cities.includes(res.data.studentInfo.city)?
                     {city:res.data.studentInfo.city ,
                     other_city:''}:
-                    {city:'Others',
+                    {city:'others',
                     other_city:res.data.studentInfo.city}
                     this.setState({
 
@@ -74,7 +74,7 @@ export default class StudentProjectForm extends Component {
                         addressLine2: res.data.studentInfo.addressLine2,
                         city:res_city.city,
                         state: res.data.studentInfo.state,
-                        other_city: res.city.other_city,
+                        other_city: res_city.other_city,
                         country: res.data.studentInfo.country,
                         zip: res.data.studentInfo.zip,
                         address_url: res.data.studentInfo.address_url,
@@ -105,6 +105,7 @@ export default class StudentProjectForm extends Component {
     }
 
     render() {
+        let item = []
         return (
             <Row>
 
@@ -131,8 +132,8 @@ export default class StudentProjectForm extends Component {
                                         <FormGroup>
                                             <Label>Category</Label>
                                             <Input disabled={!this.state.edit_state} style={whiteBG}  type="select" name="project_category" id="project_category" onChange={this.handleChange} >
-                                             <option value='Industry' name="project_category">Industry</option>
-                                                <option value='Institute' name="project_category" >Institute</option>
+                                             <option value='industry' name="project_category" selected={this.state.project_category === 'industry'}>INDUSTRY</option>
+                                                <option value='institute' name="project_category" selected={this.state.project_category === 'institute'}>INSTITUTE</option>
                                                 
                                             </Input>
                                         </FormGroup>
@@ -181,13 +182,13 @@ export default class StudentProjectForm extends Component {
                                             <Label>City</Label>
                                             <Input disabled={!this.state.edit_state} style={whiteBG}  type="select" name="city" id="city" onChange={this.handleChange} >
                                                
-                                               {cities.forEach((city)=> <option value={city} name="city">{city}</option>)}
-                                               
-                                                <option value='Others' name="city" >Others</option>
+                                               {cities.forEach((city)=> item.push(<option value={city} name="city" selected={this.state.city === city}>{city.toUpperCase()}</option>))}
+                                               {item}
+                                                <option value='others' name="city" selected={'others' === this.state.city}>OTHERS</option>
                                             </Input>
                                         </FormGroup>
                                     </Col>
-                                    {this.state.city==='others'}?(
+                                    {this.state.city==='others'?(
                                     <Col md = {6}>
                                         <FormGroup>
                                             <Label>If Others Please Specify</Label>
@@ -196,7 +197,7 @@ export default class StudentProjectForm extends Component {
                                                 This field can't be empty!
                                             </FormFeedback>
                                         </FormGroup>
-                                    </Col>):<div/>
+                                    </Col>):<div/>}
 
                                 </Row>
 
@@ -223,7 +224,7 @@ export default class StudentProjectForm extends Component {
                                     <Col>
                                         <FormGroup>
                                             <Label>zip</Label>
-                                            <Input disabled={!this.state.edit_state} value={this.state.zip} invalid={this.state.onSubmit && !this.state.zip} style={whiteBG} type="number" name="zip" id="zip" placeholder="zip" onChange={this.handleChange.bind(this)} />
+                                            <Input disabled={!this.state.edit_state} value={this.state.zip} invalid={this.state.onSubmit && !this.state.zip} style={whiteBG} type="text" name="zip" id="zip" placeholder="zip" onChange={this.handleChange.bind(this)} />
                                             <FormFeedback invalid>
                                                 This field can't be empty!
                                             </FormFeedback>
@@ -387,7 +388,7 @@ export default class StudentProjectForm extends Component {
 
     handleUpdate() {
 
-        req_data=this.state;
+        let req_data=this.state;
         if(this.state.city==='others'){
             req_data.city = this.state.other_city
         }

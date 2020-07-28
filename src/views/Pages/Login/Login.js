@@ -24,7 +24,7 @@ class Login extends Component {
       username: '',
       password: '',
       batch: '',
-      signInAs: 1,
+      signInAs: 0,
       role: ''
     }
     this.onLogin = this.onLogin.bind(this);

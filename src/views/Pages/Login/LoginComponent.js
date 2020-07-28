@@ -105,7 +105,7 @@ function LoginComponent({ loginState, handleSignInChange, handleChange, onLogin 
                                 </Avatar>
 
                                 <Typography className={classes.pos} color="textSecondary" align="center">
-                                    {(loginState.signInAs === 1) ? "Sign In to Continue" : "Sign In Using Your CSL Credentials"}
+                                    {(loginState.signInAs === 1) ? "Login to Continue" : "Login Using Your CSL Credentials"}
                                 </Typography>
                             </div>
 
@@ -141,7 +141,7 @@ function LoginComponent({ loginState, handleSignInChange, handleChange, onLogin 
 
 
                                     <Col sm={{ size: 'auto', offset: 4 }} className={classes.pos}>
-                                        <Button color="primary" className="px-4" onClick={onLogin}>SignIn</Button>
+                                        <Button color="primary" className="px-4" onClick={onLogin}>Login</Button>
                                     </Col>
 
 
