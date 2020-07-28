@@ -34,16 +34,17 @@ export default class Student extends Component {
     }
    // console.log("dfdf"+(this.props.student.StudentImages));
     return (
+      (this.props.student.Batch)?
       <Col xs="12" sm="6" md="4" lg="3" className="animated fadeIn">
         <Link className="text-decoration-none text-muted:hover" onClick={this.toggleInfo}>
           <Card >
             <CardHeader>
               <CardTitle color={parseColor(this.props.student.Batch.color)} className={"float-right text-dark"}>
-                {this.props.student.name}<br></br>
+                {this.props.student.StudentPersonalInfo.name}<br></br>
                 <h3><Badge color={parseColor(this.props.student.Batch.color)} className="float-right">{this.props.student.roll_no}</Badge></h3>
               </CardTitle>
              
-              <Media className="float-left" style={imageSize} src={(this.props.student.StudentImages !== null ?  this.props.student.StudentImages.image : false) ? 'data:image/jpeg;base64,' + this.props.student.StudentImages.image : placeholder_img} />
+              <Media className="float-left" style={imageSize} src={(this.props.student.StudentPersonalInfo.image) ?  this.props.student.StudentPersonalInfo.image : placeholder_img} />
             </CardHeader>
             {/* <CardBody className={'bg-secondary'}> */}
             <CardBody>
@@ -77,6 +78,7 @@ export default class Student extends Component {
           </ModalFooter>
         </Modal>
       </Col>
+      :<div/>
     );
   }
 
@@ -104,7 +106,7 @@ export default class Student extends Component {
             Student Email
           </ListGroupItemHeading>
           <ListGroupItemText>
-            {this.props.student.email}
+            {this.props.student.StudentPersonalInfo.email}
           </ListGroupItemText>
         </ListGroupItem>
         <ListGroupItem>
@@ -112,7 +114,7 @@ export default class Student extends Component {
             Phone Number
           </ListGroupItemHeading>
           <ListGroupItemText>
-            {this.props.student.phone_number}
+            {this.props.student.StudentPersonalInfo.phone_number}
           </ListGroupItemText>
         </ListGroupItem>
         <ListGroupItem>

@@ -22,7 +22,7 @@ import {
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
-import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 import { toast } from 'react-toastify';
 
 const Widget03 = lazy(() => import('../Widgets/Widget03'));
@@ -490,7 +490,7 @@ class Dashboard extends Component {
   }
   componentDidMount() {
 
-    axios.get('/api/students/industryVSinstitute')
+    axiosInstance.get('/api/students/industryVSinstitute')
     .then((res) => {
       const industryVSinstitute = res.data.industryVSinstitute
       let city = [];  
@@ -515,7 +515,7 @@ class Dashboard extends Component {
  })
   
 
-    axios.get('/api/students/studentVScity')
+    axiosInstance.get('/api/students/studentVScity')
       .then((res) => {
         const studentVScity = res.data.studentVScity
         let city = [];  

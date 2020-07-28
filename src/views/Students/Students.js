@@ -4,8 +4,9 @@ import {
   Input, InputGroup, InputGroupAddon, InputGroupText
 } from 'reactstrap';
 import Student from "./Student"
-import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 import { toast } from 'react-toastify';
+import Cookies from "js-cookie";
 
 
 export default class Students extends Component {
@@ -15,13 +16,13 @@ export default class Students extends Component {
       student_list: [],
       search: '',
     }
-    this.studentCards = this.studentCards.bind(this);
+ 
     this.handleChange = this.handleChange.bind(this);
   }
   
 
   componentDidMount() {
-    axios.get('/api/students/')
+    axiosInstance.get('/api/students/', { params: { id: (JSON.parse(Cookies.get("session")).batch) } })
       .then((res) => {
         this.setState({
           student_list: res.data.student_list
@@ -51,7 +52,7 @@ export default class Students extends Component {
           </CardHeader>
           <CardBody>
             <Row>
-              {this.studentCards(this.state.student_list)}
+              <Student student={this.state.student_list}/>
             </Row>
           </CardBody>
         </Card>
@@ -69,7 +70,7 @@ export default class Students extends Component {
     await this.setState({
       [event.target.name]: event.target.value
     }, () => {
-      axios.post('/api/students/search', {
+      axiosInstance.post('/api/students/search', {
         search: this.state.search
       }).then((res) => {
         if (res.data.result === 'success') {

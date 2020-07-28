@@ -29,6 +29,7 @@ var count = async () => {
 }
 const navigation_admin = require('../../_nav_admin')(count)
 const navigation_tutor = require('../../_nav_tutor')(count)
+const navigation_student = require('../../_nav_student')(count)
 
 
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
@@ -59,7 +60,7 @@ class DefaultLayout extends Component {
             <AppSidebarHeader />
             <AppSidebarForm />
             <Suspense>
-              <AppSidebarNav navConfig={(JSON.parse(Cookies.get("session")).role === "admin")? navigation_admin : navigation_tutor} {...this.props} router={router} />
+              <AppSidebarNav navConfig={(JSON.parse(Cookies.get("session")).role === "admin")? navigation_admin : (JSON.parse(Cookies.get("session")).role === "tutor")? navigation_tutor:navigation_student} {...this.props} router={router} />
             </Suspense>
             <AppSidebarFooter />
             <AppSidebarMinimizer />
@@ -94,7 +95,8 @@ class DefaultLayout extends Component {
                       />
                     ) : (null)
                   }))}
-                  <Redirect from="/" to="/dashboard" />
+                  <Redirect from="/" to={(JSON.parse(Cookies.get("session")).role=='student')?"/studentInfoForm":"/dashboard"} />
+              
                 </Switch>
               </Suspense>
             </Container>

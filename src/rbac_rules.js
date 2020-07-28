@@ -1,20 +1,16 @@
 const rules = {
-    guest: {
-      static: ["/dashboard-page:visit", "/home-page:visit"]
+    student: {
+      static: [ "/studentInfoForm-page:visit",
+      "/studentProjectForm-page:visit",]
     },
     tutor: {
       static: [
         "/home-page:visit",
         "/dashboard-page:visit",
-        "/faculty-page:visit",
-        "/students-page:visit"
+        "/guides-page:visit",
+        "/students-page:visit",
+        "/allotment-page:visit",
       ],
-      dynamic: {
-        "/allotment:edit": ({userId, batchTutorId}) => {
-          if (!userId || !batchTutorId) return false;
-          return userId === batchTutorId;
-        }
-      }
     },
     admin: {
       static: [
@@ -23,7 +19,6 @@ const rules = {
         "/dashboard-page:visit",
         "/faculty-page:visit",
         "/students-page:visit",
-        "/allotment-page:visit",
       ]
     }
   };

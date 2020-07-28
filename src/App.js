@@ -59,6 +59,7 @@ export default class App extends Component {
             <Route exact path="/login" name="Login Page" render={props => <LoginHandler {...props} />} />
             <Route exact path="/404" name="Page 404" render={props => <Page404 {...props} />} />
             <Route exact path="/500" name="Page 500" render={props => <Page500 {...props} />} />
+    
             {/* {this.isLoggedIn() ? (<Redirect push from="/login" to="/" />) : (<Redirect push from="/" to="/login" />)} */}
             <Route path="/" name="Home" render={this.handleRender}  />
           </Switch>

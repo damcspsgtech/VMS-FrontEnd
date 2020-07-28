@@ -6,7 +6,7 @@ import { Switch, FormGroup, FormControlLabel } from '@material-ui/core';
 import placeholder_img from '../../assets/img/avatars/user-placeholder.png';
 import tick_icon from '../../assets/img/icons/tick.png';
 import cross_icon from '../../assets/img/icons/cross.png';
-import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom'
 let reader = new FileReader();
@@ -81,7 +81,7 @@ export default class FacultyMember extends Component {
                   labelPlacement="top" />
              <Link className="text-decoration-none text-muted:hover" onClick={this.toggleInfo}>
             
-            <Media  style={maxSize} src={(this.props.value.image) ? 'data:image/jpeg;base64,' + this.props.value.image : placeholder_img} />
+            <Media  style={maxSize} src={(this.props.value.image_name) ?  'https://amcspsgtech.s3.amazonaws.com/faculty/photos/'+this.props.value.image_name : placeholder_img} />
          </Link>
             </CardBody>
           </Card>
@@ -151,7 +151,7 @@ export default class FacultyMember extends Component {
   }
 
   handleUpdate() {
-    axios.post('/api/faculty/update', {
+    axiosInstance.post('/api/faculty/update', {
       id: this.state.id,
       is_guide: this.state.guide,
     })

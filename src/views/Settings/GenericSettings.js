@@ -5,7 +5,7 @@ import {
   Card, CardHeader, CardBody, Collapse
 } from 'reactstrap';
 import { toast } from 'react-toastify';
-import axios from 'axios';
+import axiosInstance from '../../axiosInstance';;
 
 export default class GenericSettings extends Component {
   constructor(props) {
@@ -34,7 +34,7 @@ export default class GenericSettings extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/settings/')
+    axiosInstance.get('/api/settings/')
       .then((res) => {
         this.setState({
           count: res.data.count,
@@ -178,7 +178,7 @@ export default class GenericSettings extends Component {
   }
 
   handleSubmit() {
-    axios.post('/api/settings/', {
+    axiosInstance.post('/api/settings/', {
       student_form: this.state.stud_form,
       report_form: this.state.report_form,
       faculty_form: this.state.faculty_form,
