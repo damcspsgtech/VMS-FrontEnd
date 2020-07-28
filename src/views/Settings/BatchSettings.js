@@ -5,7 +5,7 @@ import {
   Button, ButtonGroup,
 } from 'reactstrap';
 import Batch from './Batch';
-import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 import { toast } from 'react-toastify';
 
 export default class BatchSettings extends Component {
@@ -66,7 +66,7 @@ export default class BatchSettings extends Component {
   }
 
   handleDelete(id, course_name) {
-    axios.post('/api/settings/batch/delete', {
+    axiosInstance.post('/api/settings/batch/delete', {
       batch_id: id,
     })
       .then((res) => {
@@ -79,7 +79,7 @@ export default class BatchSettings extends Component {
         }
       })
       .catch((err) => {
-        toast.danger('Failed to connect to proxy!')
+        toast.error('Failed to connect to proxy!')
       })
   }
 
@@ -97,21 +97,27 @@ export default class BatchSettings extends Component {
   }
 
   handleAdd() {
-    axios.post('/api/settings/batch/add', {
+    axiosInstance.post('/api/settings/batch/add', {
       course_id: this.state.course_id,
       batch_semester: this.state.batch_semester,
       batch_year: this.state.batch_year
     })
       .then((res) => {
+        console.log(res)
         if (res.data.result === 'course_dne') {
+     
           toast.error('Course does not exist!\nCreate the course before you create a batch!')
         }
         else if (res.data.result === 'batch_exists') {
           toast.warning('Batch entry already exists!');
         }
         else if (res.data.result === 'success') {
+          this.state.batches.push(res.data.batch)
           this.props.updateBatch();
           toast.success('Batch ' + (this.state.batch_year).slice(2, 4) + this.state.course_id + ' has been added!')
+        }
+        else{
+          toast('Failed!')
         }
       })
   }

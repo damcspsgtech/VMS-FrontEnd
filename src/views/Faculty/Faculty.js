@@ -4,7 +4,7 @@ import {
   Input, InputGroup, InputGroupAddon, InputGroupText
 } from 'reactstrap';
 import FacultyMember from "./FacultyMember"
-import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 import { toast } from 'react-toastify';
 
 
@@ -28,7 +28,7 @@ export default class Students extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/faculty/')
+    axiosInstance.get('/api/faculty/')
       .then((res) => {
         if (res.data.result === 'success') {
           this.setState({
@@ -105,7 +105,7 @@ export default class Students extends Component {
   }
 
   async handleSearch() {
-    await axios.post('/api/faculty/search', {
+    await axiosInstance.post('/api/faculty/search', {
       search: this.state.search.toLowerCase(),
       filter_guide: this.state.filter_guide,
       filter_notguide: this.state.filter_notguide,

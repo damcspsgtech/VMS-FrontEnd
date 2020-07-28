@@ -3,7 +3,7 @@ import {
   ListGroup, ListGroupItem, Button, ButtonGroup,
   Input, InputGroup, InputGroupAddon, InputGroupText
 } from 'reactstrap'
-import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 import { toast } from 'react-toastify';
 
 const Course = React.lazy(() => import('./Course'));
@@ -63,7 +63,7 @@ export default class CourseSettings extends Component {
   }
 
   handleAdd() {
-    axios.post('/api/settings/course/add/', {
+    axiosInstance.post('/api/settings/course/add/', {
       course_id: this.state.course_id,
       course_name: this.state.course_name,
     })
@@ -80,7 +80,7 @@ export default class CourseSettings extends Component {
   }
 
   handleDelete(course_id, course_name) {
-    axios.post('/api/settings/course/delete/', {
+    axiosInstance.post('/api/settings/course/delete/', {
       course_id: course_id,
     })
       .then((res) => {

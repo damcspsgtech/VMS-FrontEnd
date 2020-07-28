@@ -7,7 +7,7 @@ import {
 } from 'reactstrap'
 import { toast } from 'react-toastify'
 import parseColor from '../Colors'
-import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 
 export default class Batch extends Component {
   constructor(props) {
@@ -18,7 +18,8 @@ export default class Batch extends Component {
       batch_id: this.props.value.id,
       batch_code: this.props.value.batch_code,
       batch_semester: this.props.value.semester,
-      batch_tutor: this.props.value.Tutor,
+      batch_tutorId: this.props.value.Tutor?this.props.value.Tutor.id:null,
+      batch_tutorName: this.props.value.Tutor?this.props.value.Tutor.name:null,
       batch_course: this.props.value.Course,
       batch_count: this.props.value.count,
       batch_email: this.props.value.email,
@@ -41,7 +42,8 @@ export default class Batch extends Component {
         batch_id: this.props.value.id,
         batch_code: this.props.value.batch_code,
         batch_semester: this.props.value.semester,
-        batch_tutor: this.props.value.Tutor,
+        batch_tutorId: this.props.value.Tutor? this.props.value.Tutor.id:null,
+        batch_tutorName: this.props.value.Tutor?this.props.value.Tutor.name:null,
         batch_course: this.props.value.Course,
         batch_count: this.props.value.count,
         batch_email: this.props.value.email,
@@ -54,10 +56,11 @@ export default class Batch extends Component {
 
   render() {
     return (
+      (this.state.batch_course)?(
       <div class="animated fadeIn">
         <ListGroupItem color="white">
           <ListGroupItemHeading>
-            {this.state.batch_course.name}
+           {this.state.batch_course.name}
             <ButtonGroup className="float-right">
               <Button outline active={this.state.batch_active} color="secondary" onClick={this.handleActive}>
                 {this.state.batch_active ? 'Active' : 'In Active'}
@@ -65,7 +68,7 @@ export default class Batch extends Component {
               <Button color="secondary" onClick={this.toggleCollapse}>
                 Edit
             </Button>
-              <Button color="danger" onClick={this.props.handleDelete.bind(this, this.state.batch_id, this.state.batch_course.name)}>
+              <Button color="danger" disabled onClick={this.props.handleDelete.bind(this, this.state.batch_id, this.state.batch_course.name)}>
                 Delete
             </Button>
             </ButtonGroup>
@@ -75,8 +78,8 @@ export default class Batch extends Component {
               <Badge outline color={parseColor(this.state.batch_color)}> {this.state.batch_code}</Badge>&nbsp;
             <Badge color={parseColor(this.state.batch_color)}>Batch Count: {this.state.batch_count}</Badge>&nbsp;
             <Badge>Semester: {this.state.batch_semester}</Badge>&nbsp;
-            <Badge color="dark">Tutor: {this.state.batch_tutor.name}</Badge>&nbsp;
-            <Badge color={(this.state.batch_active === true) ? 'primary' : 'secondary'}>{this.state.batch_active ? 'Active' : 'In Active'}</Badge>
+            <Badge color="dark">Tutor: {this.state.batch_tutorName}</Badge>&nbsp;
+            <Badge color={(this.state.batch_active ) ? 'primary' : 'secondary'}>{this.state.batch_active ? 'Active' : 'In Active'}</Badge>
             </h4>
           </ListGroupItemHeading>
         </ListGroupItem>
@@ -107,9 +110,9 @@ export default class Batch extends Component {
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>Batch Tutor</InputGroupText>
                 </InputGroupAddon>
-                <Input name="batch_tutor" value={(this.state.batch_tutor.id)} onChange={this.handleChange.bind(this)} onKeyPress={this.handleKeyPress} />
+                <Input name="batch_tutorId" value={(this.state.batch_tutorId)} onChange={this.handleChange.bind(this)} onKeyPress={this.handleKeyPress} />
                 <InputGroupAddon addonType="prepend">
-                  <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_tutor.id}</Badge></InputGroupText>
+                  <InputGroupText><Badge color={parseColor(this.state.batch_color)}>{this.state.batch_tutorId}</Badge></InputGroupText>
                 </InputGroupAddon>
               </InputGroup>
               <br></br>
@@ -140,7 +143,8 @@ export default class Batch extends Component {
             </div></CardBody>
           </ListGroupItem>
         </Collapse>
-      </div>
+      </div>):
+      <div/>
     )
   }
 
@@ -150,8 +154,8 @@ export default class Batch extends Component {
     })
   }
   handleChange(event) {
-    if (event.target.name === 'batch_tutor') {
-      this.setState({ [event.target.name]: (event.target.value).toLowerCase() });
+    if (event.target.name === 'batch_tutorId') {
+      this.setState({ [event.target.name]: (event.target.value ).toLowerCase()});
     }
     else {
       this.setState({ [event.target.name]: (event.target.value) });
@@ -164,14 +168,15 @@ export default class Batch extends Component {
       batch_count: this.props.value.count,
       batch_email: this.props.value.email,
       batch_year: this.props.value.year,
-      batch_tutor: this.props.value.Tutor,
+      batch_tutorId: this.props.value.Tutor.id,
+      batch_tutorName: this.props.value.Tutor.name,
       batch_color: this.props.value.color,
       batch_active: this.props.value.active,
     });
   };
 
   handleUpdate() {
-    axios.post('/api/settings/batch/update', this.state)
+    axiosInstance.post('/api/settings/batch/update', this.state)
       .then((res) => {
         if (res.data.result === 'success') {
           toast.success('Updated batch details!');
@@ -196,14 +201,14 @@ export default class Batch extends Component {
     await this.setState({
       batch_active: !this.state.batch_active
     })
-    axios.post('/api/settings/batch/update', this.state)
+    axiosInstance.post('/api/settings/batch/update', this.state)
       .then((res) => {
         if (res.data.result === 'failed') {
           toast.error('Failed to set batch as ' + (this.state.batch_active ? 'active' : 'in- active') + '!');
         }
         else if (res.data.result === 'success') {
           toast.success('Updated batch as ' + (this.state.batch_active ? 'active' : 'in-active') + '!');
-          this.props.updateBatch();
+  
         }
         else {
           toast.warning('Uncaught Exception!');

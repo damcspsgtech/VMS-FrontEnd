@@ -4,6 +4,7 @@ import {
 	TabPane, TabContent, Card, CardHeader, CardBody,
 } from 'reactstrap';
 import classnames from 'classnames'
+import axiosInstance from '../../axiosInstance';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -22,7 +23,7 @@ export default class Settings extends Component {
 		this.updateBatch = this.updateBatch.bind(this);
 
 		this.state = {
-			activeTab: 'Generic',
+			activeTab: 'Batch',
 			batch_list: [[]],
 			course_list: [[]],
 		};
@@ -30,8 +31,8 @@ export default class Settings extends Component {
 
 	componentDidMount() {
 		axios.all([
-			axios.get('/api/settings/batch/'),
-			axios.get('/api/settings/course/')
+			axiosInstance.get('/api/settings/batch/'),
+			axiosInstance.get('/api/settings/course/')
 		])
 			.then(axios.spread((batchResponse, courseResponse) => {
 				this.setState({
@@ -71,11 +72,7 @@ export default class Settings extends Component {
 	renderTabs() {
 		return (
 			<React.Fragment>
-				<NavItem className="animated fadeIn">
-					<NavLink className={classnames({ active: this.state.activeTab === 'Generic' })} onClick={() => { this.toggle('Generic') }}>
-						Generic
-          </NavLink>
-				</NavItem>
+			
 				<NavItem className="animated fadeIn">
 					<NavLink className={classnames({ active: this.state.activeTab === 'Batch' })}
 						onClick={() => { this.toggle('Batch') }}>
@@ -129,7 +126,7 @@ export default class Settings extends Component {
 		]);
 	}
 	updateCourse() {
-		axios.get('/api/settings/course')
+		axiosInstance.get('/api/settings/course')
 			.then((res) => {
 				if (res.data.result === 'success') {
 					this.setState({
@@ -148,7 +145,7 @@ export default class Settings extends Component {
 			})
 	}
 	updateBatch() {
-		axios.get('/api/settings/batch')
+		axiosInstance.get('/api/settings/batch')
 			.then((res) => {
 				if (res.data.result === 'success') {
 					this.setState({
@@ -160,7 +157,7 @@ export default class Settings extends Component {
 				}
 			})
 			.catch((err) => {
-				toast.danger('Failed to connect to proxy')
+				toast.error('Failed to connect to proxy')
 			})
 	}
 }
