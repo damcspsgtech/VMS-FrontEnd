@@ -11,15 +11,21 @@ module.exports = (count) => {
                 },
                 class: ''             // optional class names space delimited list for title item ex: "text-center"
               },
+              {
+                name: 'Dashboard',
+                icon: 'icon-speedometer',
+                url: '/studentHome',
+            },
             {
                 name: 'Profile',
-                icon: 'cui-envelope-closed',
+                icon: 'icon-user',
                 url: '/studentInfoForm',
             },
             {
                 name: 'Project Details',
+                icon: 'fa fa-laptop',
                 url: '/studentProjectForm',
-                icon: 'cui-envelope-closed',
+               
             },
             // {
             //     name: 'Report Form',

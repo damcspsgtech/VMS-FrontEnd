@@ -112,7 +112,6 @@ export default class BatchSettings extends Component {
           toast.warning('Batch entry already exists!');
         }
         else if (res.data.result === 'success') {
-          this.state.batches.push(res.data.batch)
           this.props.updateBatch();
           toast.success('Batch ' + (this.state.batch_year).slice(2, 4) + this.state.course_id + ' has been added!')
         }

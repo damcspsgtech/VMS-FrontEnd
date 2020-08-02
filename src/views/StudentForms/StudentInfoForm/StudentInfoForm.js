@@ -73,12 +73,12 @@ export default class StudentInfoForm extends Component {
 		
 		}
 		else{
-			toast('Failed To Fetch Details')	
+			toast('Failed To Fetch Details, Try again later')	
 		
 		}
       })
       .catch((error) => {
-        toast('error'+error)
+        toast('Failed To Fetch Details, Try again later')
       })
 
 		
@@ -168,7 +168,7 @@ export default class StudentInfoForm extends Component {
 									<Col md={12}>
 										<FormGroup>
 											<Label for="examplePhone">Phone Number</Label>
-											<Input disabled={!this.state.edit_state} style={whiteBG} invalid={this.state.onSubmit && !this.state.phone_number} value={this.state.phone_number} type="number" name="phone_number" id="phone_number" placeholder="xxxxxxxxx"  onChange={this.handleChange}/>
+											<Input disabled={!this.state.edit_state} style={whiteBG} invalid={this.state.onSubmit && !this.state.phone_number} value={this.state.phone_number} type="text" name="phone_number" id="phone_number" placeholder="xxxxxxxxx"  onChange={this.handleChange}/>
 										</FormGroup>
 									</Col>
 								</Row>
@@ -177,13 +177,13 @@ export default class StudentInfoForm extends Component {
 								<div style={{marginTop:10}}>
 								{this.state.edit_state?
 								(<Row>
-									<Col sm={{ size: 'auto', offset: 2 }}>
+									<Col className="col-sm-auto offset-sm-1 offset-md-2">
 										<FormGroup>
 										
 											<Button  color="danger" onClick={this.handleReset}>Cancel</Button>
 										</FormGroup>
 									</Col>
-									<Col sm={{ size: 'auto', offset: 2 }}>
+									<Col className="col-sm-auto offset-sm-1 offset-md-2">
 										<FormGroup>
 											<Button color="success" onClick={this.handleSubmit}>Done</Button>
 										</FormGroup>
@@ -236,6 +236,30 @@ export default class StudentInfoForm extends Component {
 			edit_state: !this.state.edit_state,
 			onSubmit:false
 		});
+
+		const emailReqOptions = {
+			method: 'PATCH',
+			headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type, Accept', 'Accept': 'application/json', 'Content-Type': 'application/json', 'apikey': 'hasldfuiqwbfnljdhsabfalsukydfbsad' },
+			body: JSON.stringify({
+				value : this.state.email
+			})
+		  };
+		  fetch('https://api.amcspsgtech.in/v1/student/update/email/'+this.state.roll_no, emailReqOptions)
+			.catch((error) => {
+			  console.log('csl email updation error\n' + error);
+			})
+
+			const phReqOptions = {
+				method: 'PATCH',
+				headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type, Accept', 'Accept': 'application/json', 'Content-Type': 'application/json', 'apikey': 'hasldfuiqwbfnljdhsabfalsukydfbsad' },
+				body: JSON.stringify({
+					value : this.state.phone_number
+				})
+			  };
+			  fetch('https://api.amcspsgtech.in/v1/student/update/phonenumber/'+this.state.roll_no, emailReqOptions)
+				.catch((error) => {
+				  console.log('csl phonenumber updation error\n' + error);
+				})
 
 		axiosInstance.post('/api/students/updateStudentPersonalInfo/', {
 			roll_no: this.state.roll_no,
@@ -297,12 +321,12 @@ uploadPhoto(){
 				  console.log(this.state)
 			  }
 			  else{
-				  toast('Failed To Upload Photo,Try Later')	
+				  toast.error('Failed To Upload Photo,Try again later')	
 			  
 			  }
 			})
 			.catch((error) => {
-			  toast('error'+error)
+			  toast.error('Failed To Upload Photo,Try again later')
 			})
 				
 		  }

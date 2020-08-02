@@ -134,7 +134,7 @@ class DefaultHeader extends Component {
             <DropdownMenu right>
               <DropdownItem header tag="div" className="text-center"><strong>{this.state.name}</strong></DropdownItem>
               {/* <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem> */}
-              <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
+              {/* <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem> */}
               <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

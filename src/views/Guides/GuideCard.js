@@ -4,16 +4,12 @@ import {
 } from 'reactstrap'
 import { Switch, FormGroup, FormControlLabel } from '@material-ui/core';
 import placeholder_img from '../../assets/img/avatars/user-placeholder.png';
-import tick_icon from '../../assets/img/icons/tick.png';
-import cross_icon from '../../assets/img/icons/cross.png';
+
 import axiosInstance from '../../axiosInstance';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom'
 let reader = new FileReader();
 
-
-
-const icon = { "tick": tick_icon, "cross": cross_icon }
 
 
 export default class FacultyMember extends Component {
@@ -59,7 +55,7 @@ export default class FacultyMember extends Component {
 
       <Col xs="12" sm="6" md="4" lg="3" className="animated fadeIn">
      
-          <Card   outline color="secondary">
+          {/* <Card   outline color="secondary">
          
            <CardHeader onClick={this.toggleInfo}>
            <CardTitle  right className={"float-right"}>
@@ -72,7 +68,31 @@ export default class FacultyMember extends Component {
            </CardHeader>
           
       
-          </Card>
+          </Card> */}
+           <Link className="text-decoration-none text-muted:hover" onClick={this.toggleInfo}>
+
+<Card   outline color="secondary">
+         
+         <CardHeader onClick={this.toggleInfo}>
+         <CardTitle  right className={"float-right"}>
+          {this.props.value.title + this.props.value.name.toUpperCase()}
+          <h3><Badge color="dark" className={"float-right"}>{this.props.value.id.toUpperCase()}</Badge></h3>
+            
+         </CardTitle>
+
+         </CardHeader>
+        
+          
+          <CardBody >
+          
+         
+          
+          <Media  style={maxSize} src={(this.props.value.image_name) ?  'https://amcspsgtech.s3.amazonaws.com/faculty/photos/'+this.props.value.image_name : placeholder_img} />
+       
+          </CardBody>
+        </Card>
+        </Link>
+
       
       
         
