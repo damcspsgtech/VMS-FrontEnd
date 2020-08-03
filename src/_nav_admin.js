@@ -17,7 +17,6 @@ module.exports = (count) => {
         icon: 'icon-speedometer',
         badge: {
           variant: 'info',
-          text: 'UPDATES',
         },
       },
       {

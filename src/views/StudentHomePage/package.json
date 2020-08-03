@@ -1,0 +1,6 @@
+{
+    "name": "StudentHomePage",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./StudentHomePage.js"
+  }

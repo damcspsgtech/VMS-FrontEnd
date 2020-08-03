@@ -1,7 +1,8 @@
 const rules = {
     student: {
       static: [ "/studentInfoForm-page:visit",
-      "/studentProjectForm-page:visit",]
+      "/studentProjectForm-page:visit",
+    "/studentHome-page:visit"]
     },
     tutor: {
       static: [
@@ -10,6 +11,7 @@ const rules = {
         "/guides-page:visit",
         "/students-page:visit",
         "/allotment-page:visit",
+        "/page404-page:visit"
       ],
     },
     admin: {

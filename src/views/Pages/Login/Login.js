@@ -25,7 +25,8 @@ class Login extends Component {
       password: '',
       batch: '',
       signInAs: 0,
-      role: ''
+      role: '',
+      onSubmit:false,
     }
     this.onLogin = this.onLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -39,7 +40,7 @@ class Login extends Component {
   redirectStudent() {
     const cookie_value = { 'userName': this.state.username, 'role': 'student', 'batch': this.state.batch, 'id': this.state.username + '_' + this.state.batch.split('_')[1] }
     Cookies.set("session", JSON.stringify(cookie_value))
-    this.props.history.push('/studentInfoForm')
+    this.props.history.push('/studentHome')
   }
 
   checkStudent(student_info) {
@@ -51,22 +52,23 @@ class Login extends Component {
       phone_number: student_info.phoneNumber,
     })
       .then((res) => {
-
+        this.setState({onSubmit : false})
         if (res.data.result === 'success') {
           this.redirectStudent()
         }
         else {
-          toast('Failed to connect to Server!\n')
+          toast.error('Failed to connect to Server, Try again later\n')
         }
       })
       .catch((error) => {
-        toast('Failed to connect to Server!\n')
+        toast.error('Failed to connect to Server, Try again later\n')
       })
 
   }
 
 
   onLogin() {
+    this.setState({onSubmit : true})
     if (this.state.signInAs === 1) {
       console.log(this.state.username)
       axiosInstance.post('/api/login', {
@@ -74,7 +76,7 @@ class Login extends Component {
         password: this.state.password
       }, axiosConfig)
         .then((res) => {
-          console.log(res.data.result)
+          this.setState({onSubmit : false})
           if (res.data.result === "success") {
             this.setState({ isLoggedIn: true });
             const cookie_value = res.data
@@ -86,6 +88,7 @@ class Login extends Component {
           }
         })
         .catch((error) => {
+          this.setState({onSubmit : false})
           toast('error\n' + error)
         })
     }
@@ -111,19 +114,23 @@ class Login extends Component {
 
                 }
                 else {
-                  toast.warning('Wrong Credentials')
+                  this.setState({onSubmit : false})
+                  toast.error('Wrong Credentials')
                 }
               })
               .catch((error) => {
-                toast('error\n' + error)
+                this.setState({onSubmit : false})
+                toast.error('Failed to connect to Server, Try again later\n')
               })
 
           }
           else {
-            toast.warning('Batch Not Active!')
+            this.setState({onSubmit : false})
+            toast.error('Permission denied!')
           }
         }).catch((error) => {
-          toast('error\n')
+          this.setState({onSubmit : false})
+          toast.error('Failed to connect to Server, Try again later\n')
         })
     }
   }
@@ -142,7 +149,7 @@ class Login extends Component {
 
     return (
 
-      <LoginComponent loginState={this.state} handleSignInChange={this.handleSignInChange} handleChange={this.handleChange} onLogin={this.onLogin}/>
+      <LoginComponent loginState={this.state} handleSignInChange={this.handleSignInChange} handleChange={this.handleChange} onLogin={this.onLogin} />
     
     );
   }

@@ -15,8 +15,8 @@ class DefaultFooter extends Component {
 
     return (
       <React.Fragment>
-        <span><a href="https://www.psgtech.edu">PSG College of Technology</a> &copy; 2019, Coimbatore.</span>
-        <span className="ml-auto">Created by <a href="https://github.com/damcs">DAMCS</a></span>
+        <span className="text-sm-justify float-sm-right float-md-left"><a href="https://www.psgtech.edu">PSG College of Technology</a> &copy; 2020, Coimbatore.</span>
+        <span className="text-xs-left float-xs-left float-md-right text-sm-right ml-md-auto">Created by DAMCS </span>
       </React.Fragment>
     );
   }

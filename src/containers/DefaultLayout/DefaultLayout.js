@@ -95,8 +95,8 @@ class DefaultLayout extends Component {
                       />
                     ) : (null)
                   }))}
-                  <Redirect from="/" to={(JSON.parse(Cookies.get("session")).role=='student')?"/studentInfoForm":"/dashboard"} />
-              
+                  <Redirect from="/" to={(JSON.parse(Cookies.get("session")).role=='student')?"/studentHome":"/dashboard"} />
+                
                 </Switch>
               </Suspense>
             </Container>

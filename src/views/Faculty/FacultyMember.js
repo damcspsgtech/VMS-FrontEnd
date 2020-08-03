@@ -4,8 +4,6 @@ import {
 } from 'reactstrap'
 import { Switch, FormGroup, FormControlLabel } from '@material-ui/core';
 import placeholder_img from '../../assets/img/avatars/user-placeholder.png';
-import tick_icon from '../../assets/img/icons/tick.png';
-import cross_icon from '../../assets/img/icons/cross.png';
 import axiosInstance from '../../axiosInstance';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom'
@@ -13,7 +11,7 @@ let reader = new FileReader();
 
 
 
-const icon = { "tick": tick_icon, "cross": cross_icon }
+
 
 
 export default class FacultyMember extends Component {

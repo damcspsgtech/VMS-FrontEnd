@@ -24,6 +24,7 @@ export default class Students extends Component {
   componentDidMount() {
     axiosInstance.get('/api/students/', { params: { id: (JSON.parse(Cookies.get("session")).batch) } })
       .then((res) => {
+        console.log(res.data)
         this.setState({
           student_list: res.data.student_list
         });
@@ -52,7 +53,8 @@ export default class Students extends Component {
           </CardHeader>
           <CardBody>
             <Row>
-              <Student student={this.state.student_list}/>
+              {this.studentCards(this.state.student_list)}
+              {/* <Student student={this.state.student_list}/> */}
             </Row>
           </CardBody>
         </Card>

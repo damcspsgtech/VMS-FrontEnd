@@ -24,7 +24,7 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import axiosInstance from '../../axiosInstance';
 import { toast } from 'react-toastify';
-
+import Cookies from "js-cookie";
 const Widget03 = lazy(() => import('../Widgets/Widget03'));
 
 const brandPrimary = getStyle('--primary')
@@ -490,7 +490,7 @@ class Dashboard extends Component {
   }
   componentDidMount() {
 
-    axiosInstance.get('/api/students/industryVSinstitute')
+    axiosInstance.get('/api/students/industryVSinstitute',{params : {id: (JSON.parse(Cookies.get("session")).batch)}})
     .then((res) => {
       const industryVSinstitute = res.data.industryVSinstitute
       let city = [];  
@@ -515,13 +515,13 @@ class Dashboard extends Component {
  })
   
 
-    axiosInstance.get('/api/students/studentVScity')
+    axiosInstance.get('/api/students/studentVScity',{params : {id: (JSON.parse(Cookies.get("session")).batch)}})
       .then((res) => {
         const studentVScity = res.data.studentVScity
         let city = [];  
         let student_count = [];  
         studentVScity.forEach(record => {  
-            city.push(record.address_city);  
+            city.push(record.city);  
             student_count.push(record.student_count);  
         });  
         this.setState({  

@@ -3,8 +3,9 @@ import { Avatar, CssBaseline, TextField, Paper, InputLabel, Grid, Typography, ma
 import { Visibility, VisibilityOff, LockOutlined } from '@material-ui/icons'
 import img from '../../../assets/img/avatars/vms_homepage.png';
 import logo from '../../../assets/img/avatars/clgLogo.jpg';
-import { Media, Button, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
-
+import icon from '../../../assets/img/brand/logo.jpeg'
+import { Media, Button, CardBody, CardGroup, Col, Spinner, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import Cookies from "js-cookie";
 const logoStyle = {
     maxHeight: 64,
     maxWidth: 64
@@ -72,16 +73,18 @@ function LoginComponent({ loginState, handleSignInChange, handleChange, onLogin 
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline />
-            <Grid item xs={false} sm={4} md={7} className={classes.image} />
+            <Grid item xs={false}  md={7} className={classes.image} />
 
+          
+            
 
 
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
 
+                <img  src={icon}  className="d-block d-md-none mb-5" style={logoStyle}/>
 
-
-                    <Col md={10} >
+                    <Col md={10} className="mt-xs-5 mt-md-n1" >
 
                         <Card sm={6}>
 
@@ -141,7 +144,18 @@ function LoginComponent({ loginState, handleSignInChange, handleChange, onLogin 
 
 
                                     <Col sm={{ size: 'auto', offset: 4 }} className={classes.pos}>
-                                        <Button color="primary" className="px-4" onClick={onLogin}>Login</Button>
+                                        <Button color="primary" disabled={loginState.onSubmit} className="px-4" onClick={onLogin}>
+                                        {loginState.onSubmit?
+                                        <Spinner
+                                                    as="span"
+                                                    animation="border"
+                                                    size="sm"
+                                                    role="status"
+                                                    aria-hidden="true"
+                                                    />
+                                           :
+                                           <div/>}
+                                           Login</Button>
                                     </Col>
 
 
@@ -162,15 +176,15 @@ function LoginComponent({ loginState, handleSignInChange, handleChange, onLogin 
                     </div>
 
                 </div>
-                <div className="float-right text-right">
+                <div className="float-right text-right ">
                     <Media right src={logo} style={logoStyle} alt="PSG" /><br />
                     <Typography variant="caption" color="textSecondary">
                         <b> {'Developed by'}</b><br />
                     </Typography>
                     <Typography variant="caption" color="primary">
-                        {'Department of Applied Mathematics and Computational Science'}<br />
+                        {'Department of Applied Mathematics and Computational Sciences'}<br />
                         {'PSG College of Technology'}<br />
-                        {'Coiimbatore'}
+                        {'Coimbatore'}
                     </Typography>
 
                 </div>

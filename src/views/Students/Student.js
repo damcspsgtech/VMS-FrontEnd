@@ -34,14 +34,14 @@ export default class Student extends Component {
     }
    // console.log("dfdf"+(this.props.student.StudentImages));
     return (
-      (this.props.student.Batch)?
+    
       <Col xs="12" sm="6" md="4" lg="3" className="animated fadeIn">
         <Link className="text-decoration-none text-muted:hover" onClick={this.toggleInfo}>
           <Card >
             <CardHeader>
               <CardTitle color={parseColor(this.props.student.Batch.color)} className={"float-right text-dark"}>
                 {this.props.student.StudentPersonalInfo.name}<br></br>
-                <h3><Badge color={parseColor(this.props.student.Batch.color)} className="float-right">{this.props.student.roll_no}</Badge></h3>
+                <h3><Badge color={parseColor(this.props.student.Batch.color)} className="float-right">{this.props.student.StudentPersonalInfo.roll_no}</Badge></h3>
               </CardTitle>
              
               <Media className="float-left" style={imageSize} src={(this.props.student.StudentPersonalInfo.image) ?  this.props.student.StudentPersonalInfo.image : placeholder_img} />
@@ -49,7 +49,7 @@ export default class Student extends Component {
             {/* <CardBody className={'bg-secondary'}> */}
             <CardBody>
             <CardTitle>{this.props.student.organization_name}</CardTitle>
-            <CardSubtitle color={parseColor(this.props.student.Batch.color)}>{( this.props.student.address_city !== null && this.props.student.address_city !== undefined) ? 'City' : this.props.student.address_city}</CardSubtitle>
+            <CardSubtitle color={parseColor(this.props.student.Batch.color)}>{( this.props.student.city) ?   this.props.student.city.toUpperCase() : 'City'}</CardSubtitle>
               {/* <h3>
                 <Badge color="dark">{this.props.student.Guide.id === 'admin' ? 'Guide' : this.props.student.Guide.name}</Badge>&nbsp;
                   
@@ -60,12 +60,12 @@ export default class Student extends Component {
         </Link>
         <Modal className={"modal-" + parseColor(this.props.student.Batch.color)} isOpen={this.state.info} toggle={this.toggleInfo}>
           <ModalHeader toggle={this.toggleInfo}>
-            {this.props.student.name}&nbsp;
+            {this.props.student.StudentPersonalInfo.name.toUpperCase()}&nbsp;
               <h3><Badge color="dark">
-              {this.props.student.roll_no}
+              {this.props.student.StudentPersonalInfo.roll_no}
             </Badge>
               <Badge>
-                {this.props.student.project_category}
+                {this.props.student.project_category.toUpperCase()}
               </Badge></h3>
           </ModalHeader>
           <ModalBody>
@@ -78,8 +78,7 @@ export default class Student extends Component {
           </ModalFooter>
         </Modal>
       </Col>
-      :<div/>
-    );
+    )
   }
 
   renderItems() {
@@ -98,7 +97,7 @@ export default class Student extends Component {
             Project Domain
           </ListGroupItemHeading>
           <ListGroupItemText>
-            {this.props.student.project_domain_keywords}
+            {this.props.student.project_domain}
           </ListGroupItemText>
         </ListGroupItem>
         <ListGroupItem>
@@ -154,8 +153,8 @@ export default class Student extends Component {
             Organization's Address
           </ListGroupItemHeading>
           <ListGroupItemText>
-            <a href={this.props.student.address_url}>
-              {this.props.student.postal_address}
+            <a href={this.props.student.address_url} target="_blank">
+              {this.props.student.addressLine1+', '+ this.props.student.addressLine2+ ', ' + this.props.student.city}
             </a>
           </ListGroupItemText>
         </ListGroupItem>
