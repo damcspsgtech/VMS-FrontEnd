@@ -13,10 +13,10 @@
 
 ``` bash
 # clone the repo
-$ git clone https://github.com/damcs/stepping-stone
+$ git clone https://github.com/damcspsgtech/VMS-FrontEnd
 
 # go into app's directory
-$ cd stepping-stone
+$ cd VMS-FrontEnd
 
 # install app's dependencies
 $ npm install
